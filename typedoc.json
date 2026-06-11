@@ -1,0 +1,20 @@
+{
+  "entryPoints": [
+    "benchmark/src/data.ts",
+    "benchmark/src/profiling.ts",
+    "benchmark/src/useDebouncedValue.ts",
+    "benchmark/src/usePersistentTheme.ts",
+    "benchmark/src/virtualization.ts",
+    "slow-app/src/components/BenchmarkPanel.tsx",
+    "optimized-app/src/components/BenchmarkPanel.tsx",
+    "optimized-app/src/components/VirtualizedDataTable.tsx"
+  ],
+  "out": "site/typedoc",
+  "readme": "README.md",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "hideGenerator": true,
+  "navigationLinks": {
+    "GitHub Pages": "https://DanieleMasone.github.io/frontend-performance-lab/"
+  }
+}

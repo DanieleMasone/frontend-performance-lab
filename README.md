@@ -1,262 +1,205 @@
 # Frontend Performance Engineering Lab
 
-A practical React + TypeScript performance engineering project that compares an intentionally slow frontend implementation with an optimized version of the same user interface.
+[![CI](https://github.com/DanieleMasone/frontend-performance-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/DanieleMasone/frontend-performance-lab/actions/workflows/ci.yml)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-0f8b8d)](https://DanieleMasone.github.io/frontend-performance-lab/)
+[![React](https://img.shields.io/badge/React-19.2.7-2f80ed)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8.0.16-646cff)](https://vite.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178c6)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-172033)](LICENSE)
 
-The goal is not to showcase another generic CRUD app.  
-The goal is to demonstrate how frontend performance problems are identified, measured, explained, and improved.
+A production-grade React and TypeScript performance engineering lab that compares an intentionally slow frontend with an optimized version of the same enterprise dashboard UI.
 
----
+This repository is not a generic CRUD app. It is a portfolio case study for measuring, explaining, and improving frontend performance with reproducible scenarios.
 
-## Project Purpose
+## Project Positioning
 
-Many frontend developers talk about performance.  
-This repository focuses on measurable performance work:
+The lab demonstrates senior-level frontend performance work:
 
-- render cost
-- commit duration
-- expensive derived state
-- large list rendering
-- unnecessary re-renders
-- bundle size
-- lazy loading
-- image loading strategy
-- profiling evidence
-- before/after comparison
-
----
+- creating a realistic bottleneck without breaking usability
+- measuring render and interaction cost with source-level instrumentation
+- applying targeted optimizations rather than broad memoization
+- documenting the trade-offs and remaining limits
+- publishing demos, coverage, TypeDoc, and benchmark notes through GitHub Pages
 
 ## Repository Structure
 
 ```txt
 frontend-performance-lab/
-├─ slow-app/
-│  └─ intentionally inefficient React implementation
-├─ optimized-app/
-│  └─ optimized React implementation with the same functional behavior
-├─ benchmark/
-│  └─ benchmark notes and reproducible scenarios
-└─ docs/
-   ├─ metrics.md
-   ├─ profiling-notes.md
-   └─ results-before-after.md
+├── slow-app/                 # intentionally inefficient React + Vite app
+├── optimized-app/            # same UI with targeted performance optimizations
+├── benchmark/                # shared data, profiling, theme, and virtualization utilities
+├── docs/                     # metrics, profiling notes, before/after result templates
+├── scripts/                  # GitHub Pages artifact assembly
+├── .github/workflows/ci.yml  # CI and Pages deployment
+├── AGENTS.md                 # future Codex/session guidance
+├── README.md
+├── LICENSE
+├── package.json
+└── tsconfig.json
 ```
-
----
 
 ## Tech Stack
 
-- React
-- TypeScript
-- Vite
-- Native React Profiler API
-- Browser Performance API
-- WebStorm run/debug configurations
-- Node.js 24.x
+Versions were checked against current stable package metadata on June 11, 2026.
 
-No global performance tooling is required.  
-The project relies on source-level instrumentation, production builds, browser runtime metrics, and IDE-supported workflows.
+| Area | Choice |
+| --- | --- |
+| Runtime | Node.js 24.15.0, npm |
+| UI | React 19.2.7, React DOM 19.2.7 |
+| Build | Vite 8.0.16, `@vitejs/plugin-react` 6.0.2 |
+| Language | TypeScript 6.0.3 |
+| Tests | Vitest 4.1.8, Testing Library React 16.3.2, user-event 14.6.1 |
+| DOM test environment | jsdom 29.1.1 |
+| Coverage | `@vitest/coverage-v8` 4.1.8 |
+| API docs | TypeDoc 0.28.19 |
+| CI actions | checkout/setup-node/configure-pages v6, upload/deploy Pages v5 |
 
----
+`jsdom` is used instead of `happy-dom` because the tests exercise accessible controls, focus, DOM events, and browser-like APIs where compatibility is more valuable than the fastest possible test environment.
 
-## What This Project Demonstrates
+## Slow vs Optimized
 
-### Slow App
+Both apps use the same deterministic account dataset, visual layout, benchmark scenarios, and controls.
 
-The slow version intentionally includes common frontend performance issues:
+The slow app deliberately includes:
 
-- large data set rendered without virtualization
-- expensive filtering and sorting on every render
-- unnecessary component re-renders
-- unstable callback references
-- heavy component included in the initial bundle
-- eager image loading
-- derived state calculated repeatedly
-- excessive state ownership in top-level components
+- 20,000 account rows rendered without virtualization
+- expensive filtering and sorting during render
+- broad top-level state updates
+- unstable inline callbacks
+- non-memoized heavy chart calculations
+- a heavy chart module included in the initial app bundle
+- eager image loading and synchronous image decoding
+- repeated derived data recalculation
 
-### Optimized App
+The optimized app applies:
 
-The optimized version keeps the same user-facing behavior but improves the implementation using:
+- `useMemo` for expensive derived data
+- `React.memo` only on the high-volume virtualized row component
+- `useCallback` for callbacks passed into expensive child trees
+- manual table virtualization
+- `React.lazy` and `Suspense` for the heavy chart section
+- native lazy image loading and async decoding
+- debounced search input
+- local table selection state
 
-- memoized derived data
-- component memoization where it has measurable value
-- stable callbacks for expensive child trees
-- manual list virtualization
-- lazy-loaded heavy UI sections
-- native lazy image loading
-- better state locality
-- reduced initial bundle cost
+## Benchmark Methodology
 
----
+The built-in benchmark panels use:
 
-## Performance Scenarios
+- React Profiler API for commit counts, actual duration, and base duration
+- Browser Performance API with `performance.mark()` and `performance.measure()`
+- deterministic scenario controls for initial render, search/filter, large table scroll, chart toggle, and gallery load
 
-The benchmark page covers the following scenarios:
+Recommended manual profiling flow:
 
-| Scenario | Purpose |
-|---|---|
-| Initial render | Measures first render cost with a large UI tree |
-| Search interaction | Measures filtering/sorting responsiveness |
-| Large table scroll | Measures rendering strategy under list pressure |
-| Heavy chart toggle | Measures lazy loading and deferred execution |
-| Image gallery load | Measures asset loading strategy |
-| Production build comparison | Measures bundle output differences |
-
----
+1. Run `npm run build` and `npm run pages:build`.
+2. Serve or open the generated Pages artifact.
+3. Start with `/slow/`, run every benchmark control, and record values.
+4. Repeat the same interactions in `/optimized/`.
+5. Fill `docs/results-before-after.md` with real measurements only.
 
 ## Metrics Collected
 
 | Metric | Source |
-|---|---|
+| --- | --- |
 | React actual render duration | React Profiler API |
 | React base render duration | React Profiler API |
 | Commit count | React Profiler API |
-| Search interaction duration | Browser Performance API |
-| Bundle size | Vite production build output |
-| Largest chunk | Vite build assets |
-| Rows rendered | Application benchmark panel |
-| Before/after delta | Manual benchmark documentation |
+| Interaction duration | Browser Performance API |
+| Rows rendered in DOM | app benchmark panel |
+| Bundle and chunk size | Vite production output |
+| Coverage | Vitest V8 HTML report |
+| Manual before/after delta | `docs/results-before-after.md` |
 
----
-
-## Running the Project
-
-### Slow App
+## Commands
 
 ```bash
-cd slow-app
-npm install
-npm run dev
-```
-
-### Optimized App
-
-```bash
-cd optimized-app
-npm install
-npm run dev
-```
-
----
-
-## Building for Production
-
-```bash
-cd slow-app
+npm ci
+npm run dev:slow
+npm run dev:optimized
+npm run typecheck
+npm run lint
+npm run test
+npm run coverage
 npm run build
+npm run docs
+npm run pages:build
 ```
+
+The full local verification sequence is:
 
 ```bash
-cd optimized-app
+npm ci
+npm run typecheck
+npm run test
+npm run coverage
 npm run build
+npm run docs
+npm run pages:build
 ```
 
-Production builds are used to compare bundle size and chunking behavior.
+## GitHub Pages
 
----
+Expected deployment root:
 
-## Benchmark Methodology
+[https://DanieleMasone.github.io/frontend-performance-lab/](https://DanieleMasone.github.io/frontend-performance-lab/)
 
-Each scenario should be measured in both applications using the same data volume and the same interaction flow.
-
-Recommended baseline:
+Pages artifact layout:
 
 ```txt
-Rows: 20,000
-Search query: "enterprise"
-Chart: enabled
-Image gallery: enabled
-Build mode: production
-Browser state: fresh reload
+site/
+├── index.html
+├── slow/
+├── optimized/
+├── coverage/
+├── typedoc/
+├── docs/
+└── benchmark/
 ```
 
-For each scenario, record:
+The Vite base paths are configured for repository Pages deployment:
 
-```txt
-- slow app result
-- optimized app result
-- absolute improvement
-- percentage improvement
-- optimization applied
-- trade-off introduced
-```
+- `/frontend-performance-lab/slow/`
+- `/frontend-performance-lab/optimized/`
 
----
+## Documentation
 
-## Example Results Table
+- [Metrics](docs/metrics.md)
+- [Profiling Notes](docs/profiling-notes.md)
+- [Before/After Results](docs/results-before-after.md)
+- [Benchmark Protocol](benchmark/README.md)
 
-| Area | Slow App | Optimized App | Improvement | Optimization |
-|---|---:|---:|---:|---|
-| Initial render | TBD | TBD | TBD | Memoization + reduced initial work |
-| Search interaction | TBD | TBD | TBD | useMemo + debounced input |
-| Table rendering | TBD | TBD | TBD | Manual virtualization |
-| Initial JS bundle | TBD | TBD | TBD | Lazy loading |
-| Image loading | TBD | TBD | TBD | Native lazy loading |
+TypeDoc documents the shared benchmark, profiling, theme, debounce, and virtualization helpers plus the benchmark panel and optimized virtual table APIs. It intentionally avoids documenting every small React component.
 
----
-
-## Trade-offs
-
-This project intentionally documents trade-offs instead of presenting performance work as free optimization.
+## Trade-Offs
 
 | Optimization | Benefit | Trade-off |
-|---|---|---|
-| Memoization | Reduces repeated computation | Adds dependency management complexity |
-| React.memo | Avoids unnecessary child renders | Can hide poor state design if overused |
-| Virtualization | Reduces DOM pressure | Adds scroll and accessibility complexity |
-| Lazy loading | Improves initial bundle cost | Can delay later interactions |
-| Debouncing | Reduces repeated work | Adds perceived latency if overdone |
-| Image lazy loading | Reduces initial network pressure | Needs layout stability management |
+| --- | --- | --- |
+| Memoized filtering | Avoids repeated expensive derivation | Requires careful dependency management |
+| `React.memo` on virtual rows | Reduces high-volume child re-renders | Adds value only because row props are stable |
+| Manual virtualization | Cuts DOM pressure dramatically | Adds scroll math and ARIA complexity |
+| Lazy chart loading | Reduces initial bundle cost | First chart open may wait for a chunk |
+| Debounced search | Reduces repeated filter work | Results update after a short delay |
+| Lazy images | Reduces initial image work | Below-fold images load later |
 
----
+## Review Path
 
-## Why This Repository Exists
+1. Read `benchmark/src/data.ts` and `benchmark/src/profiling.ts`.
+2. Run the slow app and inspect the full table, eager gallery, and benchmark panel.
+3. Run the optimized app and compare virtualization, lazy chart behavior, and interaction stability.
+4. Review `docs/profiling-notes.md` for the intended measurement process.
+5. Review generated coverage and TypeDoc from the Pages artifact.
 
-Frontend performance is often discussed abstractly.
+## Limitations
 
-This project shows performance engineering as a concrete process:
+- The benchmark panel records runtime signals but does not automate browser-level performance scoring.
+- Manual result placeholders are intentionally not filled with fake numbers.
+- The dataset is synthetic and deterministic, so business labels are realistic but not production data.
+- No Playwright or Lighthouse CI is included because the current scope is source-level performance instrumentation, unit behavior, and Pages delivery.
 
-1. create a reproducible bottleneck
-2. measure it
-3. explain the root cause
-4. apply a targeted optimization
-5. measure again
-6. document the trade-off
+## Future Improvements
 
-The point is not to make synthetic numbers look good.  
-The point is to demonstrate senior-level engineering judgment around frontend performance.
-
----
-
-## Suggested Review Path
-
-For reviewers:
-
-1. Start with `slow-app`
-2. Run the benchmark scenarios
-3. Review profiler output
-4. Open `optimized-app`
-5. Run the same scenarios
-6. Compare `docs/results-before-after.md`
-7. Review the trade-off documentation
-
----
-
-## Status
-
-This repository is designed as a portfolio-grade performance engineering case study.
-
-Current focus:
-
-- React render performance
-- large list rendering
-- bundle splitting
-- runtime instrumentation
-- benchmark documentation
-
-Future extensions may include:
-
-- SSR/CSR comparison
-- hydration cost analysis
-- Core Web Vitals collection
-- automated benchmark snapshots
-- CI performance budget checks
+- Add optional browser trace export instructions.
+- Add a controlled Web Vitals collector for deployed Pages.
+- Add a documented Lighthouse workflow once real budgets are agreed.
+- Add CI performance budgets after baseline manual results are captured.

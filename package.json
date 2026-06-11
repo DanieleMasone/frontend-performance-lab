@@ -1,0 +1,52 @@
+{
+  "name": "frontend-performance-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A React and TypeScript frontend performance engineering lab comparing an intentionally slow implementation with an optimized one.",
+  "engines": {
+    "node": "24.15.0"
+  },
+  "workspaces": [
+    "slow-app",
+    "optimized-app"
+  ],
+  "scripts": {
+    "dev:slow": "npm --workspace @frontend-performance-lab/slow-app run dev",
+    "dev:optimized": "npm --workspace @frontend-performance-lab/optimized-app run dev",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "build:slow": "npm --workspace @frontend-performance-lab/slow-app run build",
+    "build:optimized": "npm --workspace @frontend-performance-lab/optimized-app run build",
+    "build": "npm run build:slow && npm run build:optimized",
+    "docs": "typedoc",
+    "pages:build": "node scripts/assemble-pages.mjs",
+    "ci": "npm run typecheck && npm run lint && npm run test && npm run coverage && npm run build && npm run docs && npm run pages:build"
+  },
+  "dependencies": {
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
+    "@types/node": "25.9.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "@vitest/coverage-v8": "4.1.8",
+    "eslint": "10.4.1",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.6.0",
+    "jsdom": "29.1.1",
+    "typedoc": "0.28.19",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.61.0",
+    "vite": "8.0.16",
+    "vitest": "4.1.8"
+  }
+}
