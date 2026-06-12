@@ -5,60 +5,71 @@
 [![React](https://img.shields.io/badge/React-19.2.7-2f80ed)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-8.0.16-646cff)](https://vite.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178c6)](https://www.typescriptlang.org/)
+[![Playwright](https://img.shields.io/badge/Playwright-1.60.0-2ead33)](https://playwright.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-172033)](LICENSE)
 
-A production-grade React and TypeScript performance engineering lab that compares an intentionally slow frontend with an optimized version of the same enterprise dashboard UI.
+A portfolio-grade React and TypeScript performance engineering lab that compares an intentionally slow dashboard with an optimized version of the same user-facing UI and benchmark scenarios.
 
-This repository is not a generic CRUD app. It is a portfolio case study for measuring, explaining, and improving frontend performance with reproducible scenarios.
+This is not a generic CRUD app. It is a case study in measurement, diagnosis, targeted optimization, testing, and publication.
+
+## Live Demo
+
+- [Project root](https://DanieleMasone.github.io/frontend-performance-lab/)
+- [Slow app](https://DanieleMasone.github.io/frontend-performance-lab/slow/)
+- [Optimized app](https://DanieleMasone.github.io/frontend-performance-lab/optimized/)
+- [Coverage](https://DanieleMasone.github.io/frontend-performance-lab/coverage/)
+- [TypeDoc](https://DanieleMasone.github.io/frontend-performance-lab/typedoc/)
+- [Documentation](https://DanieleMasone.github.io/frontend-performance-lab/docs/)
+- [Results template](https://DanieleMasone.github.io/frontend-performance-lab/docs/results-before-after/)
+- [Benchmark protocol](https://DanieleMasone.github.io/frontend-performance-lab/benchmark/)
 
 ## Project Positioning
 
-The lab demonstrates senior-level frontend performance work:
+The lab demonstrates frontend performance engineering work that can be reviewed and rerun:
 
-- creating a realistic bottleneck without breaking usability
-- measuring render and interaction cost with source-level instrumentation
-- applying targeted optimizations rather than broad memoization
-- documenting the trade-offs and remaining limits
-- publishing demos, coverage, TypeDoc, and benchmark notes through GitHub Pages
+- realistic bottlenecks that keep the slow app usable but measurably expensive
+- shared deterministic data and controls across both apps
+- React Profiler and Browser Performance API instrumentation
+- targeted optimizations instead of blanket memoization
+- unit/component coverage plus production-mode Playwright E2E smoke coverage
+- GitHub Pages output for demos, coverage, TypeDoc, docs, and benchmark notes
 
 ## Repository Structure
 
 ```txt
 frontend-performance-lab/
-├── slow-app/                 # intentionally inefficient React + Vite app
-├── optimized-app/            # same UI with targeted performance optimizations
-├── benchmark/                # shared data, profiling, theme, and virtualization utilities
-├── docs/                     # metrics, profiling notes, before/after result templates
-├── scripts/                  # GitHub Pages artifact assembly
-├── .github/workflows/ci.yml  # CI and Pages deployment
-├── AGENTS.md                 # future Codex/session guidance
-├── README.md
-├── LICENSE
-├── package.json
-└── tsconfig.json
+|-- slow-app/                 # intentionally inefficient React + Vite app
+|-- optimized-app/            # same UI with targeted performance optimizations
+|-- benchmark/                # shared data, profiling, theme, debounce, virtualization utilities
+|-- docs/                     # source metrics, profiling, TypeDoc, and result templates
+|-- e2e/                      # Playwright Chromium E2E tests
+|-- scripts/                  # Pages assembly and local static server
+|-- .github/workflows/ci.yml  # CI and Pages deployment
+|-- AGENTS.md
+|-- README.md
+|-- package.json
+`-- tsconfig.json
 ```
 
 ## Tech Stack
 
-Versions were checked against current stable package metadata on June 11, 2026.
+Versions were checked against current stable package metadata on June 12, 2026.
 
 | Area | Choice |
 | --- | --- |
-| Runtime | Node.js 24.15.0, npm |
+| Runtime | Node.js 24.15.0 locally, Node.js 24.x in CI, npm |
 | UI | React 19.2.7, React DOM 19.2.7 |
 | Build | Vite 8.0.16, `@vitejs/plugin-react` 6.0.2 |
 | Language | TypeScript 6.0.3 |
-| Tests | Vitest 4.1.8, Testing Library React 16.3.2, user-event 14.6.1 |
-| DOM test environment | jsdom 29.1.1 |
+| Unit/component tests | Vitest 4.1.8, Testing Library React 16.3.2, user-event 14.6.1, jsdom 29.1.1 |
+| E2E tests | Playwright 1.60.0, Chromium only by default |
 | Coverage | `@vitest/coverage-v8` 4.1.8 |
 | API docs | TypeDoc 0.28.19 |
-| CI actions | checkout/setup-node/configure-pages v6, upload/deploy Pages v5 |
-
-`jsdom` is used instead of `happy-dom` because the tests exercise accessible controls, focus, DOM events, and browser-like APIs where compatibility is more valuable than the fastest possible test environment.
+| CI actions | checkout/setup-node/configure-pages v6, upload/deploy Pages v5, upload-artifact v7 |
 
 ## Slow vs Optimized
 
-Both apps use the same deterministic account dataset, visual layout, benchmark scenarios, and controls.
+Both apps use the same deterministic account dataset, dashboard layout, controls, benchmark scenarios, and result readouts.
 
 The slow app deliberately includes:
 
@@ -67,49 +78,42 @@ The slow app deliberately includes:
 - broad top-level state updates
 - unstable inline callbacks
 - non-memoized heavy chart calculations
-- a heavy chart module included in the initial app bundle
+- heavy chart code in the initial app bundle
 - eager image loading and synchronous image decoding
-- repeated derived data recalculation
 
 The optimized app applies:
 
-- `useMemo` for expensive derived data
-- `React.memo` only on the high-volume virtualized row component
-- `useCallback` for callbacks passed into expensive child trees
+- `useMemo` for expensive derivation
+- `React.memo` only for high-volume virtual rows
+- stable callbacks for expensive child trees
 - manual table virtualization
-- `React.lazy` and `Suspense` for the heavy chart section
+- `React.lazy` and `Suspense` for the heavy chart
 - native lazy image loading and async decoding
 - debounced search input
-- local table selection state
+- local table row selection state
 
-## Benchmark Methodology
+## Testing Strategy
 
-The built-in benchmark panels use:
+Unit and component tests cover shared utilities, app shells, controls, benchmark panels, theme persistence, debounce behavior, deterministic data, profiling helpers, virtualization math, lazy chart behavior, image gallery behavior, and keyboard table scrolling.
 
-- React Profiler API for commit counts, actual duration, and base duration
-- Browser Performance API with `performance.mark()` and `performance.measure()`
-- deterministic scenario controls for initial render, search/filter, large table scroll, chart toggle, and gallery load
+Playwright E2E tests run against the production Pages-like artifact served under `/frontend-performance-lab/`. The suite checks:
 
-Recommended manual profiling flow:
+- root navigation and generated internal links
+- slow app benchmark, search, full table, chart, gallery, and metrics flows
+- optimized app benchmark, search, virtualization, lazy chart, and metrics flows
+- dark mode persistence in both apps
+- accessibility smoke coverage for landmarks, labels, keyboard reachability, and table structure
 
-1. Run `npm run build` and `npm run pages:build`.
-2. Serve or open the generated Pages artifact.
-3. Start with `/slow/`, run every benchmark control, and record values.
-4. Repeat the same interactions in `/optimized/`.
-5. Fill `docs/results-before-after.md` with real measurements only.
+Normal production pages default to the full 20,000-row dataset. The E2E suite passes a deterministic `?rows=1200` runtime override so the slow app still renders a large non-virtualized table without making every browser smoke test depend on a 20,000-row DOM load.
 
-## Metrics Collected
+Coverage thresholds:
 
-| Metric | Source |
-| --- | --- |
-| React actual render duration | React Profiler API |
-| React base render duration | React Profiler API |
-| Commit count | React Profiler API |
-| Interaction duration | Browser Performance API |
-| Rows rendered in DOM | app benchmark panel |
-| Bundle and chunk size | Vite production output |
-| Coverage | Vitest V8 HTML report |
-| Manual before/after delta | `docs/results-before-after.md` |
+| Metric | Threshold |
+| --- | ---: |
+| Statements | 80% |
+| Branches | 70% |
+| Functions | 75% |
+| Lines | 80% |
 
 ## Commands
 
@@ -120,23 +124,32 @@ npm run dev:optimized
 npm run typecheck
 npm run lint
 npm run test
+npm run test:watch
 npm run coverage
 npm run build
 npm run docs
 npm run pages:build
+npx playwright install chromium
+npm run e2e
+npm run e2e:ui
+npm run e2e:report
+npm run verify
 ```
 
-The full local verification sequence is:
+`npm run verify` is the full local quality gate:
 
 ```bash
-npm ci
 npm run typecheck
+npm run lint
 npm run test
 npm run coverage
 npm run build
 npm run docs
 npm run pages:build
+npm run e2e
 ```
+
+The E2E suite expects production assets, coverage, TypeDoc, and docs to exist in `site/`, which `verify` prepares before running Playwright.
 
 ## GitHub Pages
 
@@ -148,16 +161,21 @@ Pages artifact layout:
 
 ```txt
 site/
-├── index.html
-├── slow/
-├── optimized/
-├── coverage/
-├── typedoc/
-├── docs/
-└── benchmark/
+|-- index.html
+|-- slow/
+|-- optimized/
+|-- coverage/
+|-- typedoc/
+|-- docs/
+|   |-- index.html
+|   |-- metrics/
+|   |-- profiling-notes/
+|   `-- results-before-after/
+`-- benchmark/
+    `-- index.html
 ```
 
-The Vite base paths are configured for repository Pages deployment:
+The root page links to generated HTML routes, not raw Markdown files. Vite base paths stay compatible with repository Pages deployment:
 
 - `/frontend-performance-lab/slow/`
 - `/frontend-performance-lab/optimized/`
@@ -168,38 +186,39 @@ The Vite base paths are configured for repository Pages deployment:
 - [Profiling Notes](docs/profiling-notes.md)
 - [Before/After Results](docs/results-before-after.md)
 - [Benchmark Protocol](benchmark/README.md)
+- [TypeDoc Overview](docs/typedoc-overview.md)
 
-TypeDoc documents the shared benchmark, profiling, theme, debounce, and virtualization helpers plus the benchmark panel and optimized virtual table APIs. It intentionally avoids documenting every small React component.
+Manual result placeholders must remain placeholders until real browser measurements are collected.
+
+## CI Behavior
+
+The GitHub Actions workflow runs on pushes to `main`/`master`, pull requests, and manual dispatch. It uses Node.js 24.x, installs with `npm ci`, runs typecheck, lint, unit/component tests, coverage, app builds, TypeDoc, Pages assembly, Playwright Chromium installation, and E2E tests.
+
+The Playwright HTML report is uploaded as a workflow artifact on failure and is not published to GitHub Pages. Pages deployment runs only from the repository default branch.
 
 ## Trade-Offs
 
 | Optimization | Benefit | Trade-off |
 | --- | --- | --- |
-| Memoized filtering | Avoids repeated expensive derivation | Requires careful dependency management |
-| `React.memo` on virtual rows | Reduces high-volume child re-renders | Adds value only because row props are stable |
-| Manual virtualization | Cuts DOM pressure dramatically | Adds scroll math and ARIA complexity |
+| Memoized filtering | Avoids repeated expensive derivation | Requires careful dependencies |
+| `React.memo` on virtual rows | Reduces high-volume child re-renders | Useful only because row props are stable |
+| Manual virtualization | Cuts DOM pressure dramatically | Adds scroll math and ARIA responsibility |
 | Lazy chart loading | Reduces initial bundle cost | First chart open may wait for a chunk |
 | Debounced search | Reduces repeated filter work | Results update after a short delay |
 | Lazy images | Reduces initial image work | Below-fold images load later |
 
-## Review Path
-
-1. Read `benchmark/src/data.ts` and `benchmark/src/profiling.ts`.
-2. Run the slow app and inspect the full table, eager gallery, and benchmark panel.
-3. Run the optimized app and compare virtualization, lazy chart behavior, and interaction stability.
-4. Review `docs/profiling-notes.md` for the intended measurement process.
-5. Review generated coverage and TypeDoc from the Pages artifact.
-
 ## Limitations
 
-- The benchmark panel records runtime signals but does not automate browser-level performance scoring.
-- Manual result placeholders are intentionally not filled with fake numbers.
-- The dataset is synthetic and deterministic, so business labels are realistic but not production data.
-- No Playwright or Lighthouse CI is included because the current scope is source-level performance instrumentation, unit behavior, and Pages delivery.
+- Runtime panel measurements do not replace a full browser trace.
+- JSDOM validates behavior, not real rendering performance.
+- Playwright checks user-visible flows but does not assert pixel layouts or performance budgets.
+- The dataset is synthetic and deterministic.
+- Manual result tables are intentionally not filled with invented numbers.
+- Lighthouse CI is not included until real budgets and a clear need exist.
 
 ## Future Improvements
 
 - Add optional browser trace export instructions.
 - Add a controlled Web Vitals collector for deployed Pages.
-- Add a documented Lighthouse workflow once real budgets are agreed.
-- Add CI performance budgets after baseline manual results are captured.
+- Add a documented Lighthouse workflow after performance budgets are agreed.
+- Add CI performance budgets once real baseline measurements are recorded.

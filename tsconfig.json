@@ -21,6 +21,7 @@
     "benchmark/src",
     "slow-app/src",
     "optimized-app/src",
+    "e2e",
     "global.d.ts",
     "*.config.ts",
     "slow-app/*.config.ts",

@@ -10,6 +10,10 @@ export default tseslint.config(
       "site",
       "dist",
       "coverage",
+      ".vite",
+      "playwright-report",
+      "test-results",
+      "blob-report",
       "slow-app/dist",
       "optimized-app/dist"
     ]

@@ -30,7 +30,21 @@ import { VirtualizedDataTable } from "./components/VirtualizedDataTable";
 
 const HeavyRevenueChart = lazy(() => import("./components/HeavyRevenueChart"));
 const TEST_ROW_COUNT = 160;
-const ROW_COUNT = import.meta.env.MODE === "test" ? TEST_ROW_COUNT : DATASET_SIZE;
+
+function resolveRowCount() {
+  if (import.meta.env.MODE === "test") {
+    return TEST_ROW_COUNT;
+  }
+
+  const requestedRows = Number(new URLSearchParams(window.location.search).get("rows"));
+  if (Number.isInteger(requestedRows) && requestedRows >= 100 && requestedRows <= DATASET_SIZE) {
+    return requestedRows;
+  }
+
+  return DATASET_SIZE;
+}
+
+const ROW_COUNT = resolveRowCount();
 
 function scrollBenchmarkTable(selector: string) {
   const table = document.querySelector<HTMLElement>(selector);

@@ -10,7 +10,7 @@
     "optimized-app/src/components/VirtualizedDataTable.tsx"
   ],
   "out": "site/typedoc",
-  "readme": "README.md",
+  "readme": "docs/typedoc-overview.md",
   "excludePrivate": true,
   "excludeInternal": true,
   "hideGenerator": true,

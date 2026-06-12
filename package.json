@@ -17,13 +17,19 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint .",
     "test": "vitest run",
+    "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "build:slow": "npm --workspace @frontend-performance-lab/slow-app run build",
     "build:optimized": "npm --workspace @frontend-performance-lab/optimized-app run build",
     "build": "npm run build:slow && npm run build:optimized",
     "docs": "typedoc",
     "pages:build": "node scripts/assemble-pages.mjs",
-    "ci": "npm run typecheck && npm run lint && npm run test && npm run coverage && npm run build && npm run docs && npm run pages:build"
+    "pages:serve": "node scripts/serve-site.mjs --base /frontend-performance-lab/ --port 4175",
+    "e2e": "node scripts/run-e2e.mjs",
+    "e2e:ui": "node scripts/run-e2e.mjs --ui",
+    "e2e:report": "playwright show-report",
+    "verify": "node scripts/verify.mjs",
+    "ci": "npm run verify"
   },
   "dependencies": {
     "react": "19.2.7",
@@ -31,6 +37,7 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@playwright/test": "1.60.0",
     "@testing-library/dom": "10.4.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",

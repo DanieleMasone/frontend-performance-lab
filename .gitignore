@@ -10,6 +10,10 @@ optimized-app/dist/
 # Generated reports and GitHub Pages artifact
 coverage/
 site/
+typedoc/
+playwright-report/
+test-results/
+blob-report/
 .nyc_output/
 
 # TypeScript and tool caches

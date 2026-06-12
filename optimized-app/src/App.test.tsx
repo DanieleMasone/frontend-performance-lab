@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import App from "./App";
@@ -33,6 +33,30 @@ describe("optimized app", () => {
     await user.click(within(panel).getByRole("button", { name: /search\/filter/i }));
 
     expect(within(panel).getByText(/optimized enterprise search/i)).toBeTruthy();
+  });
+
+  it("applies filters and runs benchmark reset flow", () => {
+    render(<App />);
+
+    fireEvent.change(screen.getByLabelText("Region"), { target: { value: "APAC" } });
+    fireEvent.change(screen.getByLabelText("Tier"), { target: { value: "Scale" } });
+    fireEvent.change(screen.getByLabelText("Sort"), { target: { value: "annualContractValue" } });
+    fireEvent.change(screen.getByLabelText("Order"), { target: { value: "asc" } });
+
+    expect((screen.getByLabelText("Region") as HTMLSelectElement).value).toBe("APAC");
+    expect((screen.getByLabelText("Tier") as HTMLSelectElement).value).toBe("Scale");
+    expect((screen.getByLabelText("Sort") as HTMLSelectElement).value).toBe("annualContractValue");
+    expect((screen.getByLabelText("Order") as HTMLSelectElement).value).toBe("asc");
+
+    const panel = screen.getByTestId("optimized-benchmark-panel");
+    fireEvent.click(within(panel).getByRole("button", { name: /initial render/i }));
+    expect(within(panel).getByText(/optimized initial render reset/i)).toBeTruthy();
+
+    fireEvent.click(within(panel).getByRole("button", { name: /image gallery load/i }));
+    expect(within(panel).getByText(/optimized gallery toggle/i)).toBeTruthy();
+
+    fireEvent.click(within(panel).getByRole("button", { name: /reset/i }));
+    expect(within(panel).getByText(/no interaction measured/i)).toBeTruthy();
   });
 
   it("renders only a virtual window of account rows", () => {
