@@ -58,8 +58,6 @@ Recommended manual checks:
 - Elements panel for row count difference
 - Coverage report for test coverage, not runtime code coverage
 
-Lighthouse is intentionally not part of CI until stable budgets and real baseline measurements exist.
-
 ## Known Limits
 
 - Source-level marks do not replace a full browser trace.

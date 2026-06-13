@@ -76,8 +76,8 @@ Run unit tests during normal code changes. Run Playwright when changing app flow
 - Do not add fake performance numbers.
 - Use clear placeholders only where real manual measurement is required.
 - Browser trace export may be documented as a manual DevTools workflow, but do not add automated trace capture or commit generated trace artifacts unless explicitly requested.
-- Web Vitals collection is out of scope unless explicitly requested and backed by a clear collection strategy.
-- CI performance budgets require real recorded baseline measurements first; do not add arbitrary thresholds.
+- Do not add Web Vitals collection unless explicitly requested and backed by a clear collection strategy.
+- Do not add CI performance budgets without real recorded baseline measurements.
 - TypeDoc should focus on benchmark, profiling, data, theme, debounce, virtualization helpers, benchmark panels, and the optimized virtual table API.
 
 ## CI and GitHub Pages Constraints

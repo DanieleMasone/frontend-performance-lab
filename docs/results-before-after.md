@@ -41,8 +41,6 @@ All values below must be filled from real manual measurements. Do not replace pl
 | --- | --- | --- |
 | Manual measurement pending | Manual measurement pending | Manual measurement pending |
 
-CI performance budgets should only be introduced after real baseline measurements are recorded and reviewed.
-
 ## Sign-Off Checklist
 
 - [ ] Slow app measured in production mode

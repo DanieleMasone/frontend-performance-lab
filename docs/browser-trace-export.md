@@ -53,4 +53,4 @@ The slow app should show real pressure without being broken. The optimized app s
 
 Use the Performance panel export action to save a `.json` trace file when you need to share or archive evidence.
 
-Do not commit generated trace files by default. Add trace artifacts only when they are intentionally small examples, reviewed for size and privacy, and clearly useful for documentation.
+Trace exports are local measurement artifacts. Keep them outside the repository unless a small reviewed example is intentionally added to documentation.

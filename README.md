@@ -215,26 +215,20 @@ The Playwright HTML report is uploaded as a workflow artifact on failure and is 
 
 - Runtime panel measurements do not replace a full browser trace.
 - JSDOM validates behavior, not real rendering performance.
-- Playwright checks user-visible flows but does not assert pixel layouts or performance budgets.
+- Playwright checks user-visible flows rather than pixel-level layout or runtime performance assertions.
 - The dataset is synthetic and deterministic.
 - Manual result tables are intentionally not filled with invented numbers.
-- Lighthouse CI, synthetic Web Vitals collection, and CI performance budgets are intentionally out of current scope.
 
-## Current Scope
+## Scope
 
-This repository currently focuses on:
+This repository demonstrates:
 
 - controlled React render profiling
 - deterministic benchmark scenarios
-- slow vs optimized implementation comparison
+- intentionally slow vs optimized implementation comparison
+- enterprise-oriented dashboard UX
+- responsive and accessible UI behavior
 - unit/component test coverage
 - Playwright E2E smoke coverage
 - TypeDoc documentation
 - GitHub Pages delivery
-
-Out of scope for now:
-
-- automated Lighthouse CI
-- synthetic Web Vitals collection
-- CI performance budgets without real baselines
-- committed browser trace artifacts

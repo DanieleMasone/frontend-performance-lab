@@ -33,7 +33,3 @@ Use these fields when filling `docs/results-before-after.md`:
 ## Placeholder Policy
 
 Do not invent numbers. Keep `Manual measurement pending` until the value has been collected from a real browser run.
-
-## Out Of Scope
-
-Core Web Vitals collection is intentionally out of scope for the current benchmark methodology. The lab focuses on controlled React profiling, deterministic benchmark interactions, production bundle output, and manual before/after comparisons.
