@@ -1,3 +1,6 @@
+import {
+  ImageGallery as SharedImageGallery
+} from "../../../benchmark/src/components/ImageGallery";
 import type { GalleryImage } from "../../../benchmark/src/data";
 
 interface ImageGalleryProps {
@@ -6,21 +9,12 @@ interface ImageGalleryProps {
 
 export function ImageGallery({ images }: ImageGalleryProps) {
   return (
-    <section className="panel gallery-panel" aria-labelledby="optimized-gallery-title">
-      <div className="panel-header">
-        <div>
-          <p className="eyebrow">Lazy assets</p>
-          <h2 id="optimized-gallery-title">Scenario captures</h2>
-        </div>
-      </div>
-      <div className="gallery-grid">
-        {images.map((image) => (
-          <figure key={image.id}>
-            <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
-            <figcaption>{image.title}</figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
+    <SharedImageGallery
+      images={images}
+      titleId="optimized-gallery-title"
+      eyebrow="Lazy assets"
+      loading="lazy"
+      decoding="async"
+    />
   );
 }

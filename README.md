@@ -40,7 +40,7 @@ The lab demonstrates frontend performance engineering work that can be reviewed 
 frontend-performance-lab/
 |-- slow-app/                 # intentionally inefficient React + Vite app
 |-- optimized-app/            # same UI with targeted performance optimizations
-|-- benchmark/                # shared data, profiling, theme, debounce, virtualization utilities
+|-- benchmark/                # shared data, profiling, theme, debounce, virtualization, UI, and style utilities
 |-- docs/                     # source metrics, profiling, TypeDoc, and result templates
 |-- e2e/                      # Playwright Chromium E2E tests
 |-- scripts/                  # Pages assembly and local static server
@@ -57,7 +57,7 @@ Versions were checked against current stable package metadata on June 12, 2026.
 
 | Area | Choice |
 | --- | --- |
-| Runtime | Node.js 24.15.0 locally, Node.js 24.x in CI, npm |
+| Runtime | Node.js `>=24.15.0 <25` locally, Node.js 24.x in CI, npm |
 | UI | React 19.2.7, React DOM 19.2.7 |
 | Build | Vite 8.0.16, `@vitejs/plugin-react` 6.0.2 |
 | Language | TypeScript 6.0.3 |
@@ -102,6 +102,7 @@ Playwright E2E tests run against the production Pages-like artifact served under
 - slow app benchmark, search, full table, chart, gallery, and metrics flows
 - optimized app benchmark, search, virtualization, lazy chart, and metrics flows
 - dark mode persistence in both apps
+- mobile responsive smoke coverage without global horizontal overflow
 - accessibility smoke coverage for landmarks, labels, keyboard reachability, and table structure
 
 Normal production pages default to the full 20,000-row dataset. The E2E suite passes a deterministic `?rows=1200` runtime override so the slow app still renders a large non-virtualized table without making every browser smoke test depend on a 20,000-row DOM load.

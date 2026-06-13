@@ -21,7 +21,7 @@ export function SlowDataTable({ rows, selectedRowIds, onRowToggle }: SlowDataTab
         </div>
         <span className="table-count">{rows.length.toLocaleString()} rows</span>
       </div>
-      <div className="table-scroll" data-table-scroll="slow">
+      <div className="table-scroll" data-table-scroll="slow" tabIndex={0} aria-label="Scrollable full account table">
         <table>
           <thead>
             <tr>

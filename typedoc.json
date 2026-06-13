@@ -5,8 +5,7 @@
     "benchmark/src/useDebouncedValue.ts",
     "benchmark/src/usePersistentTheme.ts",
     "benchmark/src/virtualization.ts",
-    "slow-app/src/components/BenchmarkPanel.tsx",
-    "optimized-app/src/components/BenchmarkPanel.tsx",
+    "benchmark/src/components/BenchmarkPanel.tsx",
     "optimized-app/src/components/VirtualizedDataTable.tsx"
   ],
   "out": "site/typedoc",

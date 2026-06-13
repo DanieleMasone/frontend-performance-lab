@@ -1,4 +1,4 @@
-@import "../../slow-app/src/styles.css";
+@import "../../benchmark/src/styles/dashboard.css";
 
 .visually-hidden {
   position: absolute;
@@ -20,7 +20,9 @@
 }
 
 .virtual-table {
-  min-width: 1120px;
+  max-width: 100%;
+  width: 100%;
+  overflow-x: auto;
   margin-top: 14px;
   border-top: 1px solid var(--border);
 }
@@ -29,10 +31,12 @@
   position: sticky;
   top: 0;
   z-index: 2;
+  min-width: 1120px;
   background: var(--surface);
 }
 
 .virtual-scroll {
+  min-width: 1120px;
   overflow: auto;
   outline: none;
 }
@@ -84,10 +88,4 @@
 
 .virtual-row:not(.virtual-heading-row):hover {
   background: color-mix(in srgb, var(--accent) 8%, transparent);
-}
-
-@media (max-width: 820px) {
-  .virtual-table {
-    overflow-x: auto;
-  }
 }

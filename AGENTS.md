@@ -10,7 +10,7 @@ The goal is to demonstrate measurement, diagnosis, targeted optimization, testin
 
 - `slow-app/` contains the intentionally inefficient React + TypeScript + Vite implementation.
 - `optimized-app/` contains the equivalent user-facing UI with targeted optimizations.
-- `benchmark/src/` contains shared deterministic data generation, profiling helpers, theme persistence, debounce behavior, and virtualization math.
+- `benchmark/src/` contains shared deterministic data generation, profiling helpers, theme persistence, debounce behavior, virtualization math, reusable dashboard UI, and shared CSS tokens.
 - `e2e/` contains Playwright E2E tests against the generated Pages-like artifact.
 - `docs/` contains source benchmark documentation, TypeDoc overview, and manual result templates.
 - `site/` is generated output for GitHub Pages and must not be edited by hand.
@@ -79,7 +79,7 @@ Run unit tests during normal code changes. Run Playwright when changing app flow
 
 ## CI and GitHub Pages Constraints
 
-- Node.js target is 24.15.0 locally and `24.x` in CI.
+- Node.js target is `>=24.15.0 <25` locally and `24.x` in CI.
 - Use npm and `npm ci`.
 - Keep GitHub Actions pins on current stable major versions.
 - GitHub Pages artifact is assembled under `site/`.

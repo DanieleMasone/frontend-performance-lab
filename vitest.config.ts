@@ -5,7 +5,8 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: "jsdom",
-    pool: "threads",
+    pool: "forks",
+    fileParallelism: false,
     globals: true,
     testTimeout: 15_000,
     setupFiles: ["./vitest.setup.ts"],
@@ -20,7 +21,7 @@ export default defineConfig({
       reporter: ["text", "html", "lcov"],
       reportsDirectory: "site/coverage",
       include: [
-        "benchmark/src/**/*.ts",
+        "benchmark/src/**/*.{ts,tsx}",
         "slow-app/src/**/*.{ts,tsx}",
         "optimized-app/src/**/*.{ts,tsx}"
       ],
