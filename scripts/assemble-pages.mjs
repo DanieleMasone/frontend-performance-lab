@@ -165,6 +165,22 @@ function renderMarkdown(markdown) {
   return html.join("\n");
 }
 
+function removeLeadingTitle(markdown, title) {
+  const normalized = markdown.replace(/\r\n/g, "\n");
+  const lines = normalized.split("\n");
+
+  if (lines[0]?.trim() !== `# ${title}`) {
+    return normalized;
+  }
+
+  let start = 1;
+  while (lines[start]?.trim() === "") {
+    start += 1;
+  }
+
+  return lines.slice(start).join("\n");
+}
+
 function documentShell({ title, description, body, backHref = "../" }) {
   return `<!doctype html>
 <html lang="en">
@@ -179,6 +195,9 @@ function documentShell({ title, description, body, backHref = "../" }) {
         background: #f6f7fb;
         color: #172033;
       }
+      *,
+      *::before,
+      *::after { box-sizing: border-box; }
       body { margin: 0; }
       main { width: min(960px, 100%); margin: 0 auto; padding: 44px 20px 64px; }
       nav { margin-bottom: 28px; }
@@ -187,10 +206,10 @@ function documentShell({ title, description, body, backHref = "../" }) {
       h2 { margin-top: 36px; }
       h3 { margin-top: 28px; }
       p, li { line-height: 1.68; color: #4d5a73; }
-      table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #fff; }
+      table { display: block; width: 100%; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 20px 0; background: #fff; }
       th, td { border: 1px solid #d7dce8; padding: 10px 12px; text-align: left; vertical-align: top; }
       th { background: #eef2f7; color: #172033; }
-      pre { overflow: auto; border: 1px solid #d7dce8; border-radius: 8px; padding: 16px; background: #172033; color: #eef3ff; }
+      pre { max-width: 100%; overflow: auto; border: 1px solid #d7dce8; border-radius: 8px; padding: 16px; background: #172033; color: #eef3ff; }
       code { font-family: "SFMono-Regular", Consolas, monospace; }
       .deck { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 24px; }
       .deck a { display: block; min-height: 110px; border: 1px solid #d7dce8; border-radius: 8px; padding: 18px; background: #fff; color: inherit; text-decoration: none; }
@@ -220,13 +239,14 @@ function documentShell({ title, description, body, backHref = "../" }) {
 
 async function writeMarkdownPage({ source, target, title, description, backHref }) {
   const markdown = await readFile(source, "utf8");
+  const bodyMarkdown = removeLeadingTitle(markdown, title);
   await mkdir(target, { recursive: true });
   await writeFile(
     join(target, "index.html"),
     documentShell({
       title,
       description,
-      body: renderMarkdown(markdown),
+      body: renderMarkdown(bodyMarkdown),
       backHref
     })
   );
@@ -313,6 +333,11 @@ async function main() {
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         background: #f6f7fb;
         color: #172033;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
       }
       body {
         margin: 0;

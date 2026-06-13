@@ -15,9 +15,21 @@ async function expectNoDocumentOverflow(page: Page) {
 test.describe("responsive smoke", () => {
   test.use({ viewport: mobileViewport });
 
-  test("root page and app dashboards avoid global horizontal overflow on mobile", async ({ page }) => {
+  test("published pages avoid global horizontal overflow on mobile", async ({ page }) => {
     await openSection(page);
     await expect(page.getByRole("heading", { name: "Frontend Performance Lab" })).toBeVisible();
+    await expectNoDocumentOverflow(page);
+
+    await openSection(page, "docs");
+    await expect(page.getByRole("heading", { name: "Documentation" })).toBeVisible();
+    await expectNoDocumentOverflow(page);
+
+    await openSection(page, "benchmark");
+    await expect(page.getByRole("heading", { name: "Benchmark Protocol" })).toBeVisible();
+    await expectNoDocumentOverflow(page);
+
+    await openSection(page, "typedoc");
+    await expect(page.getByRole("heading", { name: "frontend-performance-lab" })).toBeVisible();
     await expectNoDocumentOverflow(page);
 
     await openSection(page, "slow");

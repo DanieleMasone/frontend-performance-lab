@@ -64,6 +64,21 @@ test.describe("Pages navigation", () => {
     }
   });
 
+  test("generated markdown pages render a single page heading", async ({ page }) => {
+    const sections = [
+      "docs/metrics",
+      "docs/profiling-notes",
+      "docs/browser-trace-export",
+      "docs/results-before-after",
+      "benchmark"
+    ];
+
+    for (const section of sections) {
+      await openSection(page, section);
+      await expect(page.locator("h1")).toHaveCount(1);
+    }
+  });
+
   test("slow and optimized app routes load from the generated artifact", async ({ page }) => {
     await openSection(page, "slow");
     await expect(page.getByRole("heading", { name: /slow implementation/i })).toBeVisible();
