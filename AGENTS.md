@@ -75,6 +75,9 @@ Run unit tests during normal code changes. Run Playwright when changing app flow
 - Keep generated Pages documentation as HTML routes, not fragile raw Markdown links.
 - Do not add fake performance numbers.
 - Use clear placeholders only where real manual measurement is required.
+- Browser trace export may be documented as a manual DevTools workflow, but do not add automated trace capture or commit generated trace artifacts unless explicitly requested.
+- Web Vitals collection is out of scope unless explicitly requested and backed by a clear collection strategy.
+- CI performance budgets require real recorded baseline measurements first; do not add arbitrary thresholds.
 - TypeDoc should focus on benchmark, profiling, data, theme, debounce, virtualization helpers, benchmark panels, and the optimized virtual table API.
 
 ## CI and GitHub Pages Constraints
@@ -91,6 +94,7 @@ Run unit tests during normal code changes. Run Playwright when changing app flow
   - `/docs/`
   - `/docs/metrics/`
   - `/docs/profiling-notes/`
+  - `/docs/browser-trace-export/`
   - `/docs/results-before-after/`
   - `/benchmark/`
 - Vite base paths must stay compatible with `https://DanieleMasone.github.io/frontend-performance-lab/`.
@@ -111,6 +115,7 @@ Run unit tests during normal code changes. Run Playwright when changing app flow
 - Do not replace manual result placeholders with invented metrics.
 - Do not add broad refactors unrelated to the performance case study.
 - Do not add Lighthouse CI unless explicitly requested.
+- Do not add Web Vitals collection or CI performance budgets unless explicitly requested and supported by real baselines.
 
 ## Commands To Run Before Finishing
 
@@ -145,6 +150,7 @@ site/
 |   |-- index.html
 |   |-- metrics/
 |   |-- profiling-notes/
+|   |-- browser-trace-export/
 |   `-- results-before-after/
 `-- benchmark/
     `-- index.html

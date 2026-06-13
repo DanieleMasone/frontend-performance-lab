@@ -240,6 +240,7 @@ function docsIndexPage() {
     body: `<section class="deck" aria-label="Documentation pages">
       <a href="./metrics/"><strong>Metrics</strong><span>Signals captured by the app panels, build output, coverage, and manual result templates.</span></a>
       <a href="./profiling-notes/"><strong>Profiling Notes</strong><span>How to inspect the slow and optimized implementations without changing the comparison.</span></a>
+      <a href="./browser-trace-export/"><strong>Browser Trace Export</strong><span>Manual Chrome and Edge DevTools trace workflow for focused benchmark scenarios.</span></a>
       <a href="./results-before-after/"><strong>Results Before and After</strong><span>Placeholders for real browser measurements. No invented performance numbers.</span></a>
     </section>`
   });
@@ -264,6 +265,13 @@ async function main() {
     target: join(siteDir, "docs", "profiling-notes"),
     title: "Profiling Notes",
     description: "Measurement workflow and implementation notes for the slow and optimized apps.",
+    backHref: "../"
+  });
+  await writeMarkdownPage({
+    source: join(root, "docs", "browser-trace-export.md"),
+    target: join(siteDir, "docs", "browser-trace-export"),
+    title: "Browser Trace Export",
+    description: "Manual DevTools trace export workflow for focused benchmark scenarios.",
     backHref: "../"
   });
   await writeMarkdownPage({

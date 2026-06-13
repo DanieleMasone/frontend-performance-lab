@@ -21,6 +21,7 @@ This is not a generic CRUD app. It is a case study in measurement, diagnosis, ta
 - [TypeDoc](https://DanieleMasone.github.io/frontend-performance-lab/typedoc/)
 - [Documentation](https://DanieleMasone.github.io/frontend-performance-lab/docs/)
 - [Results template](https://DanieleMasone.github.io/frontend-performance-lab/docs/results-before-after/)
+- [Browser trace export](https://DanieleMasone.github.io/frontend-performance-lab/docs/browser-trace-export/)
 - [Benchmark protocol](https://DanieleMasone.github.io/frontend-performance-lab/benchmark/)
 
 ## Project Positioning
@@ -171,6 +172,7 @@ site/
 |   |-- index.html
 |   |-- metrics/
 |   |-- profiling-notes/
+|   |-- browser-trace-export/
 |   `-- results-before-after/
 `-- benchmark/
     `-- index.html
@@ -185,6 +187,7 @@ The root page links to generated HTML routes, not raw Markdown files. Vite base 
 
 - [Metrics](docs/metrics.md)
 - [Profiling Notes](docs/profiling-notes.md)
+- [Browser Trace Export](docs/browser-trace-export.md)
 - [Before/After Results](docs/results-before-after.md)
 - [Benchmark Protocol](benchmark/README.md)
 - [TypeDoc Overview](docs/typedoc-overview.md)
@@ -215,11 +218,23 @@ The Playwright HTML report is uploaded as a workflow artifact on failure and is 
 - Playwright checks user-visible flows but does not assert pixel layouts or performance budgets.
 - The dataset is synthetic and deterministic.
 - Manual result tables are intentionally not filled with invented numbers.
-- Lighthouse CI is not included until real budgets and a clear need exist.
+- Lighthouse CI, synthetic Web Vitals collection, and CI performance budgets are intentionally out of current scope.
 
-## Future Improvements
+## Current Scope
 
-- Add optional browser trace export instructions.
-- Add a controlled Web Vitals collector for deployed Pages.
-- Add a documented Lighthouse workflow after performance budgets are agreed.
-- Add CI performance budgets once real baseline measurements are recorded.
+This repository currently focuses on:
+
+- controlled React render profiling
+- deterministic benchmark scenarios
+- slow vs optimized implementation comparison
+- unit/component test coverage
+- Playwright E2E smoke coverage
+- TypeDoc documentation
+- GitHub Pages delivery
+
+Out of scope for now:
+
+- automated Lighthouse CI
+- synthetic Web Vitals collection
+- CI performance budgets without real baselines
+- committed browser trace artifacts

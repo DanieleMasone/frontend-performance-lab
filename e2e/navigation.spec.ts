@@ -41,6 +41,29 @@ test.describe("Pages navigation", () => {
     }
   });
 
+  test("docs index includes browser trace export and generated docs links resolve", async ({ page }) => {
+    await openSection(page, "docs");
+
+    await expect(page.getByRole("heading", { name: "Documentation" })).toBeVisible();
+    await expect(page.getByRole("link", { name: /^browser trace export\b/i })).toHaveAttribute(
+      "href",
+      "./browser-trace-export/"
+    );
+
+    const hrefs = (await page.locator("a[href]").evaluateAll((links) =>
+      links
+        .map((link) => link.getAttribute("href"))
+        .filter((href) => Boolean(href) && !href?.startsWith("http") && !href?.startsWith("#"))
+    )) as string[];
+
+    for (const href of hrefs) {
+      const target = new URL(href, page.url()).toString();
+      const response = await page.request.get(target);
+      expect(response.ok(), `${href} should resolve`).toBe(true);
+      expect(target.endsWith(".md"), `${href} should not expose raw markdown`).toBe(false);
+    }
+  });
+
   test("slow and optimized app routes load from the generated artifact", async ({ page }) => {
     await openSection(page, "slow");
     await expect(page.getByRole("heading", { name: /slow implementation/i })).toBeVisible();
