@@ -11,3 +11,5 @@ This TypeDoc output focuses on the reusable pieces that make the performance com
 - benchmark panel and optimized virtual table APIs
 
 It intentionally avoids documenting every small React component so the API reference stays useful as a performance engineering artifact.
+
+Use the [User Guide](/frontend-performance-lab/docs/user-guide/) for practical setup, benchmark, testing, and troubleshooting workflows.

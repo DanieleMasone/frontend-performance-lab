@@ -181,7 +181,7 @@ function removeLeadingTitle(markdown, title) {
   return lines.slice(start).join("\n");
 }
 
-function documentShell({ title, description, body, backHref = "../" }) {
+function documentShell({ title, description, body, rootHref = "../" }) {
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -200,8 +200,10 @@ function documentShell({ title, description, body, backHref = "../" }) {
       *::after { box-sizing: border-box; }
       body { margin: 0; }
       main { width: min(960px, 100%); margin: 0 auto; padding: 44px 20px 64px; }
-      nav { margin-bottom: 28px; }
+      nav { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-bottom: 28px; }
+      nav a { text-underline-offset: 4px; }
       a { color: #0b6f72; font-weight: 700; }
+      a:focus-visible { outline: 3px solid #34a0a4; outline-offset: 3px; }
       h1 { margin: 0 0 10px; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1; }
       h2 { margin-top: 36px; }
       h3 { margin-top: 28px; }
@@ -227,7 +229,14 @@ function documentShell({ title, description, body, backHref = "../" }) {
   </head>
   <body>
     <main>
-      <nav><a href="${backHref}">Frontend Performance Lab</a></nav>
+      <nav aria-label="Documentation">
+        <a href="${rootHref}">Home</a>
+        <a href="${rootHref}docs/user-guide/">User Guide</a>
+        <a href="${rootHref}docs/">Documentation</a>
+        <a href="${rootHref}benchmark/">Benchmark</a>
+        <a href="${rootHref}typedoc/">TypeDoc</a>
+        <a href="${rootHref}coverage/">Coverage</a>
+      </nav>
       <h1>${escapeHtml(title)}</h1>
       ${description ? `<p class="lead">${escapeHtml(description)}</p>` : ""}
       ${body}
@@ -237,7 +246,7 @@ function documentShell({ title, description, body, backHref = "../" }) {
 `;
 }
 
-async function writeMarkdownPage({ source, target, title, description, backHref }) {
+async function writeMarkdownPage({ source, target, title, description, rootHref }) {
   const markdown = await readFile(source, "utf8");
   const bodyMarkdown = removeLeadingTitle(markdown, title);
   await mkdir(target, { recursive: true });
@@ -247,7 +256,7 @@ async function writeMarkdownPage({ source, target, title, description, backHref 
       title,
       description,
       body: renderMarkdown(bodyMarkdown),
-      backHref
+      rootHref
     })
   );
 }
@@ -255,13 +264,17 @@ async function writeMarkdownPage({ source, target, title, description, backHref 
 function docsIndexPage() {
   return documentShell({
     title: "Documentation",
-    description: "Manual measurement notes, metrics definitions, and before/after result templates for the performance lab.",
-    backHref: "../",
+    description: "Start with the User Guide, then use the focused references for measurement, profiling, traces, and results.",
+    rootHref: "../",
     body: `<section class="deck" aria-label="Documentation pages">
+      <a href="./user-guide/"><strong>User Guide</strong><span>Setup, review path, benchmark workflow, testing strategy, documentation map, and troubleshooting.</span></a>
+      <a href="../benchmark/"><strong>Benchmark Protocol</strong><span>Canonical scenarios, fixed inputs, and measurement rules for both apps.</span></a>
       <a href="./metrics/"><strong>Metrics</strong><span>Signals captured by the app panels, build output, coverage, and manual result templates.</span></a>
       <a href="./profiling-notes/"><strong>Profiling Notes</strong><span>How to inspect the slow and optimized implementations without changing the comparison.</span></a>
       <a href="./browser-trace-export/"><strong>Browser Trace Export</strong><span>Manual Chrome and Edge DevTools trace workflow for focused benchmark scenarios.</span></a>
       <a href="./results-before-after/"><strong>Results Before and After</strong><span>Placeholders for real browser measurements. No invented performance numbers.</span></a>
+      <a href="../typedoc/"><strong>TypeDoc</strong><span>Generated reference for the public benchmark and performance helper APIs.</span></a>
+      <a href="../coverage/"><strong>Coverage</strong><span>Generated Vitest coverage report for shared utilities and both applications.</span></a>
     </section>`
   });
 }
@@ -274,39 +287,46 @@ async function main() {
   await mkdir(join(siteDir, "benchmark"), { recursive: true });
   await writeFile(join(siteDir, "docs", "index.html"), docsIndexPage());
   await writeMarkdownPage({
+    source: join(root, "docs", "user-guide.md"),
+    target: join(siteDir, "docs", "user-guide"),
+    title: "User Guide",
+    description: "Practical setup, review, benchmarking, testing, and troubleshooting for the performance lab.",
+    rootHref: "../../"
+  });
+  await writeMarkdownPage({
     source: join(root, "docs", "metrics.md"),
     target: join(siteDir, "docs", "metrics"),
     title: "Metrics",
     description: "Runtime, bundle, coverage, and manual measurement fields used by the lab.",
-    backHref: "../"
+    rootHref: "../../"
   });
   await writeMarkdownPage({
     source: join(root, "docs", "profiling-notes.md"),
     target: join(siteDir, "docs", "profiling-notes"),
     title: "Profiling Notes",
     description: "Measurement workflow and implementation notes for the slow and optimized apps.",
-    backHref: "../"
+    rootHref: "../../"
   });
   await writeMarkdownPage({
     source: join(root, "docs", "browser-trace-export.md"),
     target: join(siteDir, "docs", "browser-trace-export"),
     title: "Browser Trace Export",
     description: "Manual DevTools trace export workflow for focused benchmark scenarios.",
-    backHref: "../"
+    rootHref: "../../"
   });
   await writeMarkdownPage({
     source: join(root, "docs", "results-before-after.md"),
     target: join(siteDir, "docs", "results-before-after"),
     title: "Results Before and After",
     description: "Manual result placeholders that must be filled only with real browser measurements.",
-    backHref: "../"
+    rootHref: "../../"
   });
   await writeMarkdownPage({
     source: join(root, "benchmark", "README.md"),
     target: join(siteDir, "benchmark"),
     title: "Benchmark Protocol",
     description: "Deterministic benchmark scenarios and measurement rules for both apps.",
-    backHref: "../"
+    rootHref: "../"
   });
   await writeFile(join(siteDir, ".nojekyll"), "");
 
@@ -408,16 +428,16 @@ async function main() {
       <h1>Frontend Performance Lab</h1>
       <p>
         A portfolio-grade React performance case study with intentionally slow and optimized implementations,
-        benchmark instrumentation, coverage, TypeDoc output, and reproducible measurement notes.
+        benchmark instrumentation, a practical User Guide, coverage, TypeDoc output, and reproducible measurement notes.
       </p>
       <section class="grid" aria-label="Site sections">
         ${slowExists ? '<a href="./slow/"><strong>Slow App</strong><span>Baseline implementation with deliberate render, bundle, and list pressure.</span></a>' : ""}
         ${optimizedExists ? '<a href="./optimized/"><strong>Optimized App</strong><span>The same UI with targeted memoization, virtualization, lazy loading, and state locality.</span></a>' : ""}
+        <a href="./docs/user-guide/"><strong>User Guide</strong><span>Practical setup, review, benchmark, testing, and troubleshooting workflow.</span></a>
+        <a href="./benchmark/"><strong>Benchmark Protocol</strong><span>Canonical scenarios and measurement rules for both apps.</span></a>
+        <a href="./docs/"><strong>Documentation</strong><span>Focused metrics, profiling, trace export, and result references.</span></a>
         ${coverageExists ? '<a href="./coverage/"><strong>Coverage</strong><span>HTML coverage generated by Vitest and the V8 provider.</span></a>' : ""}
         ${typedocExists ? '<a href="./typedoc/"><strong>TypeDoc</strong><span>Documentation for benchmark, profiling, data, and performance helper APIs.</span></a>' : ""}
-        <a href="./docs/"><strong>Documentation</strong><span>Metrics, profiling notes, and before/after result templates as static HTML pages.</span></a>
-        <a href="./docs/results-before-after/"><strong>Results Template</strong><span>Before and after metrics table with placeholders for manual measurements.</span></a>
-        <a href="./benchmark/"><strong>Benchmark Protocol</strong><span>Reusable scenarios and measurement flow for both apps.</span></a>
       </section>
     </main>
   </body>

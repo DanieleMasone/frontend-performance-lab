@@ -1,5 +1,22 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { openSection } from "./support";
+
+async function expectInternalLinksToResolve(page: Page) {
+  const hrefs = (await page.locator("a[href]").evaluateAll((links) =>
+    links
+      .map((link) => link.getAttribute("href"))
+      .filter((href) => Boolean(href) && !href?.startsWith("http") && !href?.startsWith("#"))
+  )) as string[];
+
+  expect(hrefs.length).toBeGreaterThan(0);
+
+  for (const href of new Set(hrefs)) {
+    const target = new URL(href, page.url());
+    const response = await page.request.get(target.toString());
+    expect(response.ok(), `${href} should resolve`).toBe(true);
+    expect(target.pathname.endsWith(".md"), `${href} should not expose raw markdown`).toBe(false);
+  }
+}
 
 test.describe("Pages navigation", () => {
   test.beforeEach(async ({ page }) => {
@@ -12,11 +29,11 @@ test.describe("Pages navigation", () => {
     const links = [
       { name: /^slow app\b/i, href: "./slow/" },
       { name: /^optimized app\b/i, href: "./optimized/" },
-      { name: /^coverage\b/i, href: "./coverage/" },
-      { name: /^typedoc\b/i, href: "./typedoc/" },
+      { name: /^user guide\b/i, href: "./docs/user-guide/" },
+      { name: /^benchmark protocol\b/i, href: "./benchmark/" },
       { name: /^documentation\b/i, href: "./docs/" },
-      { name: /^results template\b/i, href: "./docs/results-before-after/" },
-      { name: /^benchmark protocol\b/i, href: "./benchmark/" }
+      { name: /^coverage\b/i, href: "./coverage/" },
+      { name: /^typedoc\b/i, href: "./typedoc/" }
     ];
 
     for (const link of links) {
@@ -25,47 +42,34 @@ test.describe("Pages navigation", () => {
   });
 
   test("root links point to real generated HTML pages", async ({ page }) => {
-    const hrefs = (await page.locator("a[href]").evaluateAll((links) =>
-      links
-        .map((link) => link.getAttribute("href"))
-        .filter((href) => Boolean(href) && !href?.startsWith("http") && !href?.startsWith("#"))
-    )) as string[];
-
-    expect(hrefs.length).toBeGreaterThan(0);
-
-    for (const href of hrefs) {
-      const target = new URL(href, page.url()).toString();
-      const response = await page.request.get(target);
-      expect(response.ok(), `${href} should resolve`).toBe(true);
-      expect(target.endsWith(".md"), `${href} should not expose raw markdown`).toBe(false);
-    }
+    await expectInternalLinksToResolve(page);
   });
 
-  test("docs index includes browser trace export and generated docs links resolve", async ({ page }) => {
+  test("docs index exposes the guide and focused references", async ({ page }) => {
     await openSection(page, "docs");
 
     await expect(page.getByRole("heading", { name: "Documentation" })).toBeVisible();
-    await expect(page.getByRole("link", { name: /^browser trace export\b/i })).toHaveAttribute(
+    const directory = page.getByRole("region", { name: "Documentation pages" });
+    await expect(directory.getByRole("link", { name: /^user guide\b/i })).toHaveAttribute("href", "./user-guide/");
+    await expect(directory.getByRole("link", { name: /^browser trace export\b/i })).toHaveAttribute(
       "href",
       "./browser-trace-export/"
     );
+    await expectInternalLinksToResolve(page);
+  });
 
-    const hrefs = (await page.locator("a[href]").evaluateAll((links) =>
-      links
-        .map((link) => link.getAttribute("href"))
-        .filter((href) => Boolean(href) && !href?.startsWith("http") && !href?.startsWith("#"))
-    )) as string[];
+  test("user guide links to the complete published documentation set", async ({ page }) => {
+    await openSection(page, "docs/user-guide");
 
-    for (const href of hrefs) {
-      const target = new URL(href, page.url()).toString();
-      const response = await page.request.get(target);
-      expect(response.ok(), `${href} should resolve`).toBe(true);
-      expect(target.endsWith(".md"), `${href} should not expose raw markdown`).toBe(false);
-    }
+    await expect(page.getByRole("heading", { name: "User Guide", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Benchmark Workflow" })).toBeVisible();
+    await expect(page.locator('a[href="/frontend-performance-lab/benchmark/"]').first()).toBeVisible();
+    await expectInternalLinksToResolve(page);
   });
 
   test("generated markdown pages render a single page heading", async ({ page }) => {
     const sections = [
+      "docs/user-guide",
       "docs/metrics",
       "docs/profiling-notes",
       "docs/browser-trace-export",

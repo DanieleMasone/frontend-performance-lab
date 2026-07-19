@@ -12,7 +12,7 @@ The goal is to demonstrate measurement, diagnosis, targeted optimization, testin
 - `optimized-app/` contains the equivalent user-facing UI with targeted optimizations.
 - `benchmark/src/` contains shared deterministic data generation, profiling helpers, theme persistence, debounce behavior, virtualization math, reusable dashboard UI, and shared CSS tokens.
 - `e2e/` contains Playwright E2E tests against the generated Pages-like artifact.
-- `docs/` contains source benchmark documentation, TypeDoc overview, and manual result templates.
+- `docs/` contains the practical User Guide, focused measurement documentation, the TypeDoc overview, and manual result templates.
 - `site/` is generated output for GitHub Pages and must not be edited by hand.
 - `.github/workflows/ci.yml` builds, tests, generates docs/coverage, assembles Pages, runs Playwright, and deploys only from the default branch.
 
@@ -70,8 +70,12 @@ Run unit tests during normal code changes. Run Playwright when changing app flow
 
 ## Documentation Requirements
 
-- Keep `README.md` aligned with runnable commands and Pages output.
+- Keep `README.md` as the concise portfolio entry point: project purpose, comparison, architecture, quick start, and links to deeper documentation.
+- Keep `docs/user-guide.md` as the primary practical guide for setup, review flow, benchmarking, testing, the documentation map, and troubleshooting. Generate it at `/docs/user-guide/`.
+- Keep `benchmark/README.md` as the canonical source for benchmark scenarios, fixed inputs, and measurement rules.
 - Keep `docs/metrics.md`, `docs/profiling-notes.md`, and `docs/results-before-after.md` usable for manual measurement.
+- Keep `docs/browser-trace-export.md` focused on the manual DevTools trace workflow and `docs/typedoc-overview.md` focused on generated API scope.
+- Link to the canonical document instead of repeating complete command lists, benchmark workflows, metric definitions, or trace instructions.
 - Keep generated Pages documentation as HTML routes, not fragile raw Markdown links.
 - Do not add fake performance numbers.
 - Use clear placeholders only where real manual measurement is required.
@@ -92,6 +96,7 @@ Run unit tests during normal code changes. Run Playwright when changing app flow
   - `/coverage/`
   - `/typedoc/`
   - `/docs/`
+  - `/docs/user-guide/`
   - `/docs/metrics/`
   - `/docs/profiling-notes/`
   - `/docs/browser-trace-export/`
@@ -148,6 +153,7 @@ site/
 |-- typedoc/
 |-- docs/
 |   |-- index.html
+|   |-- user-guide/
 |   |-- metrics/
 |   |-- profiling-notes/
 |   |-- browser-trace-export/

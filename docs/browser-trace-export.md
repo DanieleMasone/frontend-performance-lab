@@ -2,6 +2,8 @@
 
 Browser traces are useful when the benchmark panel shows a slow interaction and you need to inspect what the browser did on the main thread. Use traces as manual evidence alongside the React Profiler and benchmark readouts; they are not generated automatically by this project.
 
+Keep the browser, viewport, dataset, and interaction sequence aligned with the [Benchmark Protocol](/frontend-performance-lab/benchmark/).
+
 ## When To Capture A Trace
 
 Capture a trace when you need to inspect:

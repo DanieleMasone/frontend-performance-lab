@@ -1,6 +1,6 @@
 # Metrics
 
-This project records runtime metrics in the app benchmark panels and keeps manual benchmark results in `docs/results-before-after.md`.
+This project records runtime metrics in the app benchmark panels and keeps manual benchmark results in [Results Before and After](/frontend-performance-lab/docs/results-before-after/).
 
 ## Runtime Metrics
 
@@ -16,7 +16,7 @@ This project records runtime metrics in the app benchmark panels and keeps manua
 
 ## Manual Measurement Fields
 
-Use these fields when filling `docs/results-before-after.md`:
+Use these fields when filling [Results Before and After](/frontend-performance-lab/docs/results-before-after/):
 
 | Field | Description |
 | --- | --- |

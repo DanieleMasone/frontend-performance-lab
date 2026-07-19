@@ -1,6 +1,6 @@
 # Results Before and After
 
-All values below must be filled from real manual measurements. Do not replace placeholders with estimates.
+All values below must be filled from real manual measurements. Do not replace placeholders with estimates. Use the [Benchmark Protocol](/frontend-performance-lab/benchmark/) for comparable scenarios and [Metrics](/frontend-performance-lab/docs/metrics/) for field definitions.
 
 ## Test Environment
 

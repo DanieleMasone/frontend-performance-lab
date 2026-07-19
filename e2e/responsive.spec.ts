@@ -24,6 +24,10 @@ test.describe("responsive smoke", () => {
     await expect(page.getByRole("heading", { name: "Documentation" })).toBeVisible();
     await expectNoDocumentOverflow(page);
 
+    await openSection(page, "docs/user-guide");
+    await expect(page.getByRole("heading", { name: "User Guide", exact: true })).toBeVisible();
+    await expectNoDocumentOverflow(page);
+
     await openSection(page, "benchmark");
     await expect(page.getByRole("heading", { name: "Benchmark Protocol" })).toBeVisible();
     await expectNoDocumentOverflow(page);

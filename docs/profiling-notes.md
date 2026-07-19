@@ -40,13 +40,7 @@ Memoization is intentionally limited to high-impact paths.
 
 ## Manual Browser Profiling Flow
 
-1. Build production assets with `npm run build`.
-2. Assemble the Pages artifact with `npm run pages:build`.
-3. Serve `site/` with a local static server or inspect the deployed Pages site.
-4. Open `/slow/`, clear app state, and run each benchmark control once as warm-up.
-5. Run each scenario again and record values.
-6. Repeat the same flow in `/optimized/`.
-7. Fill `docs/results-before-after.md` with the measured values.
+Use the [User Guide benchmark workflow](/frontend-performance-lab/docs/user-guide/#benchmark-workflow) for the end-to-end review flow. The [Benchmark Protocol](/frontend-performance-lab/benchmark/) remains the source of truth for scenarios, fixed inputs, and measurement rules.
 
 ## Browser DevTools Checks
 
