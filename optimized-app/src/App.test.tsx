@@ -52,7 +52,7 @@ describe("optimized app", () => {
     fireEvent.click(within(panel).getByRole("button", { name: /initial render/i }));
     expect(within(panel).getByText(/optimized initial render reset/i)).toBeTruthy();
 
-    fireEvent.click(within(panel).getByRole("button", { name: /image gallery load/i }));
+    fireEvent.click(within(panel).getByRole("button", { name: /image gallery toggle/i }));
     expect(within(panel).getByText(/optimized gallery toggle/i)).toBeTruthy();
 
     fireEvent.click(within(panel).getByRole("button", { name: /reset/i }));

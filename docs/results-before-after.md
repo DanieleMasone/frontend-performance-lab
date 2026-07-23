@@ -24,7 +24,7 @@ All values below must be filled from real manual measurements. Do not replace pl
 | Search/filter interaction | Manual measurement pending | Manual measurement pending | Manual measurement pending | Manual measurement pending | Search query: `enterprise` |
 | Large table scroll | Manual measurement pending | Manual measurement pending | Manual measurement pending | Manual measurement pending | Compare DOM rows and scroll responsiveness |
 | Heavy chart toggle | Manual measurement pending | Manual measurement pending | Manual measurement pending | Manual measurement pending | Slow bundle imports chart upfront; optimized lazy-loads |
-| Image gallery load | Manual measurement pending | Manual measurement pending | Manual measurement pending | Manual measurement pending | Slow eager images; optimized lazy images |
+| Image gallery toggle | Manual measurement pending | Manual measurement pending | Manual measurement pending | Manual measurement pending | Slow eager images; optimized lazy images |
 
 ## Bundle Results
 

@@ -127,7 +127,7 @@ export function VirtualizedDataTable({ rows, onVisibleRowsChange }: VirtualizedD
         <span className="table-count">{rows.length.toLocaleString()} rows</span>
       </div>
 
-      <div className="virtual-table" role="table" aria-label="Account portfolio" aria-rowcount={rows.length}>
+      <div className="virtual-table" role="table" aria-label="Account portfolio" aria-rowcount={rows.length + 1}>
         <div className="virtual-header" role="rowgroup">
           <div className="virtual-row virtual-heading-row" role="row" aria-rowindex={1}>
             <div className="virtual-cell" role="columnheader">Account</div>

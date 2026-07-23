@@ -47,7 +47,7 @@ const ROW_COUNT = resolveRowCount();
 
 function scrollBenchmarkTable(selector: string) {
   const table = document.querySelector<HTMLElement>(selector);
-  table?.scrollTo?.({ top: 9_000, behavior: "auto" });
+  table?.scrollTo?.({ top: table.scrollTop > 0 ? 0 : 9_000, behavior: "auto" });
 }
 
 export default function App() {
@@ -114,7 +114,9 @@ export default function App() {
     }
 
     if (scenario === "search-filter") {
-      recordInteraction(scenario, "Slow enterprise search", () => setQuery("enterprise"));
+      recordInteraction(scenario, "Slow enterprise search", () =>
+        setQuery((current) => (current === "enterprise" ? "Enterprise" : "enterprise"))
+      );
       return;
     }
 
@@ -176,7 +178,7 @@ export default function App() {
               <button type="button" onClick={() => runScenario("chart-toggle")}>
                 {showChart ? "Hide chart" : "Show chart"}
               </button>
-              <button type="button" onClick={() => runScenario("gallery-load")}>
+              <button type="button" onClick={() => runScenario("gallery-toggle")}>
                 {showGallery ? "Hide gallery" : "Show gallery"}
               </button>
             </div>

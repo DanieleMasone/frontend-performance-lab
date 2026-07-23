@@ -72,12 +72,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.84rem;
+  font-size: var(--font-md);
 }
 
 .virtual-heading-row .virtual-cell {
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: var(--font-xs);
   font-weight: 900;
   text-transform: uppercase;
 }

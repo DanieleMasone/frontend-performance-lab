@@ -12,15 +12,12 @@ export interface PortfolioRow {
   region: Region;
   tier: AccountTier;
   health: "Healthy" | "Watch" | "Critical";
-  monthlyRevenue: number;
   annualContractValue: number;
   sessions: number;
   conversionRate: number;
   latencyMs: number;
   riskScore: number;
-  lastActivity: string;
   tags: string[];
-  swatch: string;
   logoUrl: string;
 }
 
@@ -29,7 +26,6 @@ export interface GalleryImage {
   title: string;
   alt: string;
   src: string;
-  dominantColor: string;
 }
 
 export interface FilterState {
@@ -47,6 +43,13 @@ export interface PortfolioSummary {
   averageLatencyMs: number;
   criticalAccounts: number;
   weightedRiskScore: number;
+}
+
+export interface RevenueChartBucket {
+  label: PortfolioRow["health"];
+  value: number;
+  color: string;
+  percent: number;
 }
 
 export const REGIONS: readonly Region[] = ["North America", "EMEA", "APAC", "LATAM"];
@@ -168,19 +171,16 @@ export function generatePortfolioRows(count = DATASET_SIZE): PortfolioRow[] {
       region,
       tier,
       health,
-      monthlyRevenue,
       annualContractValue,
       sessions: Math.round(900 + seededUnit(index, 9) * 240_000),
       conversionRate,
       latencyMs,
       riskScore,
-      lastActivity: new Date(Date.UTC(2026, index % 6, (index % 27) + 1)).toISOString(),
       tags: [
         enterpriseLabel.toLowerCase(),
         region.toLowerCase().replace(" ", "-"),
         health.toLowerCase()
       ],
-      swatch,
       logoUrl: createLogoDataUri(accountName, swatch)
     };
   });
@@ -194,10 +194,35 @@ export function createGalleryImages(count = 10): GalleryImage[] {
       id: `gallery-${index + 1}`,
       title: `Benchmark capture ${index + 1}`,
       alt: `Synthetic benchmark capture ${index + 1}`,
-      src: createGalleryDataUri(index, dominantColor),
-      dominantColor
+      src: createGalleryDataUri(index, dominantColor)
     };
   });
+}
+
+export function buildRevenueChartSeries(rows: readonly PortfolioRow[]): RevenueChartBucket[] {
+  const buckets: RevenueChartBucket[] = [
+    { label: "Healthy", value: 0, color: "#00a896", percent: 0 },
+    { label: "Watch", value: 0, color: "#f59f00", percent: 0 },
+    { label: "Critical", value: 0, color: "#ef476f", percent: 0 }
+  ];
+
+  for (const row of rows) {
+    const target = row.health === "Healthy" ? buckets[0] : row.health === "Watch" ? buckets[1] : buckets[2];
+    let adjusted = row.annualContractValue;
+
+    for (let index = 0; index < 40; index += 1) {
+      adjusted = Math.sqrt(adjusted * 1.17 + row.riskScore * index) * 94;
+    }
+
+    target.value += adjusted;
+  }
+
+  const largest = Math.max(...buckets.map((bucket) => bucket.value), 1);
+
+  return buckets.map((bucket) => ({
+    ...bucket,
+    percent: Math.max(4, (bucket.value / largest) * 100)
+  }));
 }
 
 export function expensiveRowScore(row: PortfolioRow): number {
@@ -279,7 +304,7 @@ export function calculateSummary(rows: readonly PortfolioRow[]): PortfolioSummar
     averageConversionRate: totals.conversionRate / rows.length,
     averageLatencyMs: Math.round(totals.latencyMs / rows.length),
     criticalAccounts: totals.criticalAccounts,
-    weightedRiskScore: Math.round(totals.riskScore / totals.weight)
+    weightedRiskScore: totals.weight === 0 ? 0 : Math.round(totals.riskScore / totals.weight)
   };
 }
 

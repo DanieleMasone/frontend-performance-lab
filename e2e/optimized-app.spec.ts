@@ -38,7 +38,7 @@ test.describe("Optimized app production flow", () => {
 
     await expect(page.getByRole("table", { name: /account portfolio/i })).toHaveAttribute(
       "aria-rowcount",
-      String(dataRows)
+      String(dataRows + 1)
     );
     expect(dataRows).toBeGreaterThan(1_000);
     expect(domRows).toBeLessThan(dataRows);
@@ -49,7 +49,7 @@ test.describe("Optimized app production flow", () => {
     await expect(page.getByTestId("optimized-heavy-chart")).toBeHidden();
     await page.getByRole("button", { name: /show chart/i }).click();
     await expect(page.getByTestId("optimized-heavy-chart")).toBeVisible();
-    await expect(page.getByRole("img", { name: /revenue by account health/i })).toBeVisible();
+    await expect(page.getByRole("list", { name: /revenue by account health/i })).toBeVisible();
   });
 
   test("benchmark metrics update after virtual table scroll scenario", async ({ page }) => {

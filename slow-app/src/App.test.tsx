@@ -58,7 +58,7 @@ describe("slow app", () => {
     fireEvent.click(within(panel).getByRole("button", { name: /heavy chart toggle/i }));
     expect(screen.getByTestId("slow-heavy-chart")).toBeTruthy();
 
-    fireEvent.click(within(panel).getByRole("button", { name: /image gallery load/i }));
+    fireEvent.click(within(panel).getByRole("button", { name: /image gallery toggle/i }));
     expect(within(panel).getByText(/slow gallery toggle/i)).toBeTruthy();
 
     fireEvent.click(within(panel).getByRole("button", { name: /reset/i }));

@@ -19,7 +19,7 @@ export default defineConfig({
     ],
     coverage: {
       provider: "v8",
-      reporter: ["text", "html", "lcov"],
+      reporter: ["text", "html", "lcovonly"],
       reportsDirectory: "site/coverage",
       include: [
         "benchmark/src/**/*.{ts,tsx}",

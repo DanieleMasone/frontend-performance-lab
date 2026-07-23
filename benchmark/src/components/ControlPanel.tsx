@@ -36,7 +36,7 @@ export function ControlPanel({
 
   return (
     <section className="panel controls-panel" aria-label="Dashboard controls">
-      <label className="field search-field">
+      <label className="field">
         <span>Search</span>
         <input
           type="search"
@@ -82,7 +82,7 @@ export function ControlPanel({
         </select>
       </label>
 
-      <label className="field compact-field">
+      <label className="field">
         <span>Order</span>
         <select
           value={filters.sortDirection}

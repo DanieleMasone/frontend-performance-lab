@@ -102,7 +102,7 @@ describe("optimized app components", () => {
 
     const table = screen.getByRole("table", { name: /account portfolio/i });
     const renderedRows = screen.getAllByTestId("optimized-row");
-    expect(table.getAttribute("aria-rowcount")).toBe("120");
+    expect(table.getAttribute("aria-rowcount")).toBe("121");
     expect(renderedRows.length).toBeLessThan(40);
 
     await user.click(renderedRows[0]);
@@ -133,7 +133,7 @@ describe("optimized app components", () => {
 
     expect(screen.getByLabelText("Portfolio summary")).toBeTruthy();
     expect(screen.getByTestId("optimized-heavy-chart")).toBeTruthy();
-    expect(screen.getByRole("img", { name: /revenue by account health/i })).toBeTruthy();
+    expect(screen.getByRole("list", { name: /revenue by account health/i })).toBeTruthy();
     expect(screen.getAllByRole("img", { name: /synthetic benchmark capture/i })).toHaveLength(2);
     expect(screen.getAllByRole("img", { name: /synthetic benchmark capture/i })[0].getAttribute("loading")).toBe(
       "lazy"

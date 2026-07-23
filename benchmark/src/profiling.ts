@@ -5,7 +5,7 @@ export type BenchmarkScenarioId =
   | "search-filter"
   | "table-scroll"
   | "chart-toggle"
-  | "gallery-load";
+  | "gallery-toggle";
 
 export interface BenchmarkScenario {
   id: BenchmarkScenarioId;
@@ -59,9 +59,9 @@ export const BENCHMARK_SCENARIOS: readonly BenchmarkScenario[] = [
     description: "Toggles the revenue concentration chart."
   },
   {
-    id: "gallery-load",
-    label: "Image gallery load",
-    description: "Reveals the synthetic gallery images."
+    id: "gallery-toggle",
+    label: "Image gallery toggle",
+    description: "Hides or reveals the synthetic gallery images."
   }
 ];
 

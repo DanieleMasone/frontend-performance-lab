@@ -40,7 +40,7 @@ test.describe("Slow app production flow", () => {
   test("heavy chart and gallery scenarios work", async ({ page }) => {
     await page.getByRole("button", { name: /show chart/i }).click();
     await expect(page.getByTestId("slow-heavy-chart")).toBeVisible();
-    await expect(page.getByRole("img", { name: /revenue by account health/i })).toBeVisible();
+    await expect(page.getByRole("list", { name: /revenue by account health/i })).toBeVisible();
 
     await page.getByRole("button", { name: /hide gallery/i }).click();
     await expect(page.getByRole("heading", { name: /scenario captures/i })).toBeHidden();

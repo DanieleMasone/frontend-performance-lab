@@ -126,7 +126,7 @@ describe("slow app components", () => {
 
     expect(screen.getByLabelText("Portfolio summary")).toBeTruthy();
     expect(screen.getByTestId("slow-heavy-chart")).toBeTruthy();
-    expect(screen.getByRole("img", { name: /revenue by account health/i })).toBeTruthy();
+    expect(screen.getByRole("list", { name: /revenue by account health/i })).toBeTruthy();
     expect(screen.getAllByRole("img", { name: /synthetic benchmark capture/i })).toHaveLength(2);
     expect(screen.getAllByRole("img", { name: /synthetic benchmark capture/i })[0].getAttribute("decoding")).toBe(
       "sync"

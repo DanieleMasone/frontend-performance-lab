@@ -48,7 +48,7 @@ const ROW_COUNT = resolveRowCount();
 
 function scrollBenchmarkTable(selector: string) {
   const table = document.querySelector<HTMLElement>(selector);
-  table?.scrollTo?.({ top: 9_000, behavior: "auto" });
+  table?.scrollTo?.({ top: table.scrollTop > 0 ? 0 : 9_000, behavior: "auto" });
 }
 
 export default function App() {
@@ -128,7 +128,9 @@ export default function App() {
       }
 
       if (scenario === "search-filter") {
-        recordInteraction(scenario, "Optimized enterprise search", () => setQueryInput("enterprise"));
+        recordInteraction(scenario, "Optimized enterprise search", () =>
+          setQueryInput((current) => (current === "enterprise" ? "Enterprise" : "enterprise"))
+        );
         return;
       }
 
@@ -219,12 +221,12 @@ export default function App() {
               <button type="button" onClick={() => runScenario("chart-toggle")}>
                 {showChart ? "Hide chart" : "Show chart"}
               </button>
-              <button type="button" onClick={() => runScenario("gallery-load")}>
+              <button type="button" onClick={() => runScenario("gallery-toggle")}>
                 {showGallery ? "Hide gallery" : "Show gallery"}
               </button>
             </div>
             {showChart ? (
-              <Suspense fallback={<div className="panel loading-panel">Loading chart module</div>}>
+              <Suspense fallback={<div className="panel loading-panel" role="status">Loading chart module</div>}>
                 <HeavyRevenueChart rows={filteredRows} />
               </Suspense>
             ) : null}

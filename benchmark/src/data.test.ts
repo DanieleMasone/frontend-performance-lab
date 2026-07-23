@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildRevenueChartSeries,
   calculateSummary,
   createGalleryImages,
   filterAndSortRows,
@@ -54,6 +55,19 @@ describe("benchmark data utilities", () => {
     expect(summary.visibleAccounts).toBe(10);
     expect(summary.annualRecurringRevenue).toBeGreaterThan(0);
     expect(summary.averageLatencyMs).toBeGreaterThan(0);
+
+    const zeroValueRows = rows.map((row) => ({ ...row, annualContractValue: 0 }));
+    expect(calculateSummary(zeroValueRows).weightedRiskScore).toBe(0);
+  });
+
+  it("builds the shared deterministic revenue chart series", () => {
+    const rows = generatePortfolioRows(40);
+    const series = buildRevenueChartSeries(rows);
+
+    expect(series.map((bucket) => bucket.label)).toEqual(["Healthy", "Watch", "Critical"]);
+    expect(series.every((bucket) => Number.isFinite(bucket.value))).toBe(true);
+    expect(series.every((bucket) => bucket.percent >= 4 && bucket.percent <= 100)).toBe(true);
+    expect(buildRevenueChartSeries(rows)).toEqual(series);
   });
 
   it("creates deterministic gallery assets and display formatters", () => {

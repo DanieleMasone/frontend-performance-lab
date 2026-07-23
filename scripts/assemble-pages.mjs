@@ -194,6 +194,7 @@ function documentShell({ title, description, body, rootHref = "../" }) {
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         background: #f6f7fb;
         color: #172033;
+        --focus: #0b6f72;
       }
       *,
       *::before,
@@ -203,7 +204,7 @@ function documentShell({ title, description, body, rootHref = "../" }) {
       nav { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-bottom: 28px; }
       nav a { text-underline-offset: 4px; }
       a { color: #0b6f72; font-weight: 700; }
-      a:focus-visible { outline: 3px solid #34a0a4; outline-offset: 3px; }
+      a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
       h1 { margin: 0 0 10px; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1; }
       h2 { margin-top: 36px; }
       h3 { margin-top: 28px; }
@@ -218,7 +219,7 @@ function documentShell({ title, description, body, rootHref = "../" }) {
       .deck span { display: block; margin-top: 8px; color: #63708a; font-weight: 400; line-height: 1.5; }
       .lead { max-width: 760px; color: #4d5a73; }
       @media (prefers-color-scheme: dark) {
-        :root { background: #111827; color: #eef3ff; }
+        :root { background: #111827; color: #eef3ff; --focus: #79e0dc; }
         p, li, .lead, .deck span { color: #bac5dc; }
         a { color: #79e0dc; }
         table, .deck a { background: #182235; }
@@ -353,6 +354,7 @@ async function main() {
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         background: #f6f7fb;
         color: #172033;
+        --focus: #0b6f72;
       }
       *,
       *::before,
@@ -393,9 +395,11 @@ async function main() {
         text-decoration: none;
         background: #fff;
       }
-      a:hover,
+      a:hover {
+        border-color: #0b6f72;
+      }
       a:focus-visible {
-        outline: 3px solid #34a0a4;
+        outline: 3px solid var(--focus);
         outline-offset: 2px;
       }
       strong {
@@ -411,6 +415,7 @@ async function main() {
         :root {
           background: #111827;
           color: #eef3ff;
+          --focus: #79e0dc;
         }
         p,
         span {
