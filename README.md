@@ -81,3 +81,9 @@ Manual result placeholders remain empty until measurements are collected in a re
 GitHub Actions uses Node.js 24.x and `npm ci`, then runs typecheck, lint, unit/component tests, coverage, production builds, TypeDoc generation, Pages assembly, and Playwright Chromium E2E tests.
 
 The Pages artifact contains the two apps, User Guide, focused documentation, benchmark protocol, coverage, and TypeDoc. Deployment runs only from the repository default branch.
+
+## License
+
+Released under the MIT License. See [LICENSE](LICENSE).
+
+Copyright (c) 2026 Daniele Masone.
