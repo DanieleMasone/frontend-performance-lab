@@ -1,8 +1,7 @@
 # Frontend Performance Engineering Lab
 
-[![CI](https://github.com/DanieleMasone/frontend-performance-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/DanieleMasone/frontend-performance-lab/actions/workflows/ci.yml)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-0f8b8d)](https://DanieleMasone.github.io/frontend-performance-lab/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-172033)](LICENSE)
+[![CI](https://github.com/DanieleMasone/frontend-performance-lab/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/DanieleMasone/frontend-performance-lab/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2FDanieleMasone.github.io%2Ffrontend-performance-lab%2Fcoverage%2Fcoverage-summary.json&query=%24.total.lines.pct&suffix=%25&label=coverage&color=0f8b8d)](https://DanieleMasone.github.io/frontend-performance-lab/coverage/)
 
 A portfolio-grade React and TypeScript performance engineering lab that compares an intentionally slow dashboard with an optimized version of the same UI, data, and benchmark scenarios.
 
