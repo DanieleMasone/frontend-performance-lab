@@ -107,6 +107,7 @@ Run unit tests during normal code changes. Run Playwright when changing app flow
 
 ## Dependency Policy
 
+- Review dependency and toolchain upgrades manually. Do not add Dependabot, Renovate, scheduled dependency checks, or automatic update workflows.
 - Use stable versions only.
 - Check current stable package metadata before bumping major tooling.
 - Avoid experimental libraries unless there is a documented reason.
