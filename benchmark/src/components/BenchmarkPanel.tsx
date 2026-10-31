@@ -51,7 +51,7 @@ export function BenchmarkPanel({
   const copy = panelCopy[variant];
 
   return (
-    <aside className="panel benchmark-panel" data-testid={copy.testId} aria-labelledby={copy.titleId}>
+    <aside id={copy.testId} tabIndex={-1} className="panel benchmark-panel" data-testid={copy.testId} aria-labelledby={copy.titleId}>
       <div className="panel-header">
         <div>
           <p className="eyebrow">{copy.eyebrow}</p>

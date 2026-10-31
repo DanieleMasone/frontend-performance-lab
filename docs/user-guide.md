@@ -71,7 +71,7 @@ For a review session:
 1. Use production output from `npm run verify` or the deployed Pages site.
 2. Keep browser version, viewport, dataset size, and interaction order identical for both apps.
 3. Run each scenario once as a warm-up, restore the same starting state, then repeat it for the recorded observation.
-4. Compare React Profiler commits, interaction duration, rows in the DOM, and production bundle output.
+4. Compare production browser traces, rows in the DOM, and bundle output. Use React development/profiling builds separately for component attribution; read [measurement boundaries](/frontend-performance-lab/docs/metrics/#measurement-boundaries) before interpreting panel timings.
 5. Use [Browser Trace Export](/frontend-performance-lab/docs/browser-trace-export/) when panel metrics need main-thread evidence.
 6. Store observations in the [Results template](/frontend-performance-lab/docs/results-before-after/) without estimating missing values.
 

@@ -32,7 +32,19 @@ for (const app of apps) {
       await tabUntilFocused(page, page.getByRole("searchbox", { name: /search/i }));
       await tabUntilFocused(page, page.getByRole("button", { name: /dark mode/i }));
       await tabUntilFocused(page, page.getByRole("button", { name: /show chart/i }));
+      await page.keyboard.press("Shift+Tab");
+      await expect(page.getByRole("link", { name: "Skip to benchmark" })).toBeFocused();
+      await page.keyboard.press("Enter");
       await tabUntilFocused(page, page.getByRole("button", { name: /search\/filter/i }), 24);
+    });
+
+    test("account selection is available from the keyboard", async ({ page }) => {
+      const select = page.getByRole("button", { name: /^Select / }).first();
+      await select.focus();
+      await page.keyboard.press("Space");
+      await expect(select).toHaveAttribute("aria-pressed", "true");
+      await page.keyboard.press("Enter");
+      await expect(select).toHaveAttribute("aria-pressed", "false");
     });
   });
 }

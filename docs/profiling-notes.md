@@ -52,6 +52,14 @@ Recommended manual checks:
 - Elements panel for row count difference
 - Coverage report for test coverage, not runtime code coverage
 
+## React Profiling Builds
+
+The deployed production build does not enable React Profiler timing. For component diagnosis, run either existing Vite development command and inspect the React DevTools Profiler. Development Strict Mode and profiling instrumentation add overhead; do not mix those timings with production results.
+
+[React Performance Tracks](https://react.dev/reference/dev-tools/react-performance-tracks) align React scheduling, rendering, commits, and effects with the browser Performance timeline. They are available in development and profiling builds, not the ordinary production build. Use the existing development apps for qualitative attribution alongside the Profiler and application marks. A production profiling experiment would require the same `react-dom/client` to `react-dom/profiling` build alias in both apps and must be recorded as a separate configuration; this repository does not enable that alias.
+
+Use [Metrics](/frontend-performance-lab/docs/metrics/#measurement-boundaries) for the exact scope of the dashboard readouts and [Browser Trace Export](/frontend-performance-lab/docs/browser-trace-export/#interaction-attribution) for browser interaction attribution.
+
 ## Known Limits
 
 - Source-level marks do not replace a full browser trace.

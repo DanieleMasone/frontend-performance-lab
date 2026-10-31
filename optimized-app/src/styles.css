@@ -82,6 +82,10 @@
   text-transform: uppercase;
 }
 
+.virtual-cell.account-cell {
+  padding-block: 8px;
+}
+
 .virtual-row[aria-selected="true"] {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }

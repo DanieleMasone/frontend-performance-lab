@@ -48,7 +48,18 @@ export function SlowDataTable({ rows, selectedRowIds, onRowToggle }: SlowDataTab
                   <span className="account-cell">
                     <img src={row.logoUrl} alt="" loading="eager" decoding="sync" />
                     <span>
-                      <strong>{row.accountName}</strong>
+                      <button
+                        type="button"
+                        className="row-select"
+                        aria-label={`Select ${row.accountName}`}
+                        aria-pressed={selectedRowIds.includes(row.id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          onRowToggle(row.id);
+                        }}
+                      >
+                        {row.accountName}
+                      </button>
                       <small>{row.id}</small>
                     </span>
                   </span>

@@ -78,6 +78,7 @@ Run unit tests during normal code changes. Run Playwright when changing app flow
 - Link to the canonical document instead of repeating complete command lists, benchmark workflows, metric definitions, or trace instructions.
 - Keep generated Pages documentation as HTML routes, not fragile raw Markdown links.
 - Do not add fake performance numbers.
+- Keep measurement boundaries explicit: production React timing is disabled, callback marks are not INP, and React development/profiling results must be separated from production browser measurements.
 - Use clear placeholders only where real manual measurement is required.
 - Browser trace export may be documented as a manual DevTools workflow, but do not add automated trace capture or commit generated trace artifacts unless explicitly requested.
 - Do not add Web Vitals collection unless explicitly requested and backed by a clear collection strategy.

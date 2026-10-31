@@ -51,6 +51,14 @@ Review the main thread and summary panes for:
 
 The slow app should show real pressure without being broken. The optimized app should show targeted improvements while preserving the same user-facing workflow.
 
+## Interaction Attribution
+
+In the Performance panel, select the interaction and distinguish input delay (waiting for the main thread), processing duration (event callbacks), and presentation delay (work until the next paint). See the [INP definition](https://web.dev/articles/inp). A single lab interaction is diagnostic evidence, not a field INP score. For debounced search, also inspect when the filtered results appear: the next paint may only show the input update, before the debounce finishes.
+
+Correlate the app's User Timing marks with main-thread scripting, style/layout, and paint. The marks cover synchronous callbacks only; use the surrounding timeline to account for deferred work. React-specific attribution is described in [Profiling Notes](/frontend-performance-lab/docs/profiling-notes/#react-profiling-builds).
+
+The [Long Animation Frames API](https://developer.chrome.com/docs/web-platform/long-animation-frames) can add attribution for frames exceeding 50 ms, including scripts and forced style/layout work. In a supported browser, inspect the corresponding frame and script details alongside the interaction trace. API availability can be checked in DevTools with `PerformanceObserver.supportedEntryTypes.includes('long-animation-frame')`; missing support or missing entries does not establish that an interaction was fast. The lab does not install an observer or collect production telemetry.
+
 ## Saving Trace Files
 
 Use the Performance panel export action to save a `.json` trace file when you need to share or archive evidence.

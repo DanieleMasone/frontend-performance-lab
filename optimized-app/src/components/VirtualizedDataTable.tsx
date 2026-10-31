@@ -36,7 +36,18 @@ const VirtualRow = memo(function VirtualRow({ row, selected, rowIndex, onToggle 
       <div className="virtual-cell account-cell" role="cell">
         <img src={row.logoUrl} alt="" loading="lazy" decoding="async" />
         <span>
-          <strong>{row.accountName}</strong>
+          <button
+            type="button"
+            className="row-select"
+            aria-label={`Select ${row.accountName}`}
+            aria-pressed={selected}
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggle(row.id);
+            }}
+          >
+            {row.accountName}
+          </button>
           <small>{row.id}</small>
         </span>
       </div>

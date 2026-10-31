@@ -175,6 +175,7 @@ export default function App() {
           <main className="main-column">
             <KpiStrip summary={summary} />
             <div className="section-actions" aria-label="Optional sections">
+              <a className="skip-link" href="#slow-benchmark-panel">Skip to benchmark</a>
               <button type="button" onClick={() => runScenario("chart-toggle")}>
                 {showChart ? "Hide chart" : "Show chart"}
               </button>

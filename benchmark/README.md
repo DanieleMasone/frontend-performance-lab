@@ -18,6 +18,7 @@ This protocol keeps the slow and optimized apps comparable.
 - Use production builds, not Vite dev mode, for recorded numbers.
 - Use the same browser, viewport, data volume, and interaction order for both apps.
 - Restore the same starting state before each recorded repetition.
+- Treat the in-app reset separately from fresh navigation, and distinguish production browser measurements from React development/profiling measurements using [measurement boundaries](/frontend-performance-lab/docs/metrics/#measurement-boundaries).
 - Record real measurements only. Leave placeholders in [Results Before and After](/frontend-performance-lab/docs/results-before-after/) until manual profiling is complete.
 - Keep browser extensions disabled where practical.
 - Clear application state before a run if dark mode or search values were changed.
